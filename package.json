@@ -1,0 +1,39 @@
+{
+  "name": "shiva-next-profile",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.109.2",
+    "@react-three/fiber": "9.0.0-alpha.8",
+    "@types/node": "20.2.5",
+    "@types/react": "18.2.7",
+    "@types/react-dom": "18.2.4",
+    "autoprefixer": "10.4.14",
+    "babel-plugin-react-compiler": "0.0.0-experimental-334f00b-20240725",
+    "class-variance-authority": "^0.6.1",
+    "classnames": "^2.5.1",
+    "eslint": "8.41.0",
+    "eslint-config-next": "13.4.4",
+    "framer-motion": "^10.18.0",
+    "gsap": "^3.12.5",
+    "next": "15.0.0-rc.0",
+    "postcss": "8.4.23",
+    "react": "19.0.0-rc-8269d55d-20240802",
+    "react-dom": "19.0.0-rc-8269d55d-20240802",
+    "react-hook-form": "^7.52.1",
+    "react-icons": "^4.12.0",
+    "react-intersection-observer": "^9.13.0",
+    "react-parallax-tilt": "^1.7.234",
+    "react-tsparticles": "^2.12.2",
+    "sharp": "^0.32.6",
+    "tailwindcss": "3.3.2",
+    "tsparticles": "^2.12.0",
+    "typescript": "5.0.4"
+  }
+}
