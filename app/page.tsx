@@ -15,10 +15,12 @@ export default function Home() {
     <>
       <main
         className="font-farsi flex flex-col
-      bg-page-gradient text-primary-text "
+        text-primary-text "
       >
         <Hero />
-        <LogoTicker />
+        <section className="py-12 ">
+          <LogoTicker />
+        </section>
         <Places />
         <Booking />
         <Diseases />
