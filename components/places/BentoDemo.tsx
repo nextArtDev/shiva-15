@@ -85,7 +85,7 @@ const features = [
 
 function BentoDemo({}: Props) {
   return (
-    <div style={{ height: '100%' }} className="relative min-h-full h-full">
+    <div className="relative min-h-full h-full">
       <BentoGrid>
         {features.map((feature, idx) => (
           <BentoCard key={idx} {...feature} />
