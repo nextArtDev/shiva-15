@@ -10,6 +10,8 @@ import Comments from '@/components/Comments'
 import { LogoTicker } from '@/components/logo-tricker/LogoTicker'
 import Places from '@/components/places/Places'
 
+import BentoDemo from '@/components/places/BentoDemo'
+
 export default function Home() {
   return (
     <>
@@ -18,10 +20,11 @@ export default function Home() {
         text-primary-text "
       >
         <Hero />
-        <section className="py-12 ">
+        <section className="-my-30 bg-[#9560EB75] ">
           <LogoTicker />
         </section>
         <Places />
+        {/* <BentoDemo /> */}
         <Booking />
         <Diseases />
 

@@ -17,11 +17,17 @@ export default function LogoCarousel() {
   ]
 
   return (
-    <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-      <ul className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll">
+    <div className="bg-[#9560EB75] w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+      <ul className=" flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll">
         {logos.map((logo, index) => (
-          <li key={index}>
-            <Image src={logo.src} alt={logo.alt} />
+          <li
+            key={index}
+            className="w-full  flex flex-col justify-between items-center gap-y-4"
+          >
+            <Image width={150} src={logo.src} alt={logo.alt} />
+            <p className="text-white/60 text-center text-sm lg:text-base ">
+              {logo.alt}
+            </p>
           </li>
         ))}
       </ul>
@@ -31,7 +37,7 @@ export default function LogoCarousel() {
       >
         {logos.map((logo, index) => (
           <li key={index}>
-            <Image src={logo.src} alt={logo.alt} />
+            <Image width={150} src={logo.src} alt={logo.alt} />
           </li>
         ))}
       </ul>
