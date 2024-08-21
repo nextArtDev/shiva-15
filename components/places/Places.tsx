@@ -4,7 +4,49 @@ import { LinearGradient } from './LinearGradient'
 import { ContainerScroll } from './ContainerScroll'
 import { BentoCard, BentoGrid } from './BentoGrid'
 import { cn } from '@/lib/utils'
+import { MdAccessTime, MdOutlineDateRange } from 'react-icons/md'
+import { BackgroundBeamsWithCollision } from '../BackgroundBeamsWithCollision'
 
+const DaysForShafagh = [
+  {
+    id: 0,
+    name: 'شنبه',
+    activeHours: [15, 17],
+  },
+  {
+    id: 1,
+    name: '1 شنبه',
+    activeHours: [11, 13],
+  },
+  {
+    id: 2,
+    name: '3 شنبه',
+    activeHours: [16, 18],
+  },
+]
+const DaysForMatab = [
+  {
+    id: 0,
+    name: '1 شنبه',
+
+    activeHours: [17, 20],
+  },
+  {
+    id: 1,
+    name: '3 شنبه',
+    activeHours: [9, 12],
+  },
+  {
+    id: 2,
+    name: '4 شنبه',
+    activeHours: [17, 20],
+  },
+]
+const MatabDays = [
+  { id: '1', day: 'یکشنبه', start: '17', end: '20' },
+  { id: '2', day: 'سه‌شنبه', start: '9', end: '12' },
+  { id: '3', day: 'چهارشنبه', start: '17', end: '20' },
+]
 const shafagh = [
   {
     // Icon: FileTextIcon,
@@ -88,8 +130,8 @@ const shafagh = [
 const matab = [
   {
     // Icon: FileTextIcon,
-    name: 'Save your files',
-    description: 'We automatically save your files as you type.',
+    name: 'مطب شمس‌آبادی',
+    // description: 'We automatically save your files as you type.',
     href: '#',
     cta: 'Learn more',
     className: 'min-h-full row-span-2 col-span-full',
@@ -119,7 +161,36 @@ const matab = [
       //       </figure>
       //     ))}
       //   </Marquee>
-      <div className="bg-blue-400 "></div>
+      <div className="bg-transparent">
+        {MatabDays.map((day) => (
+          <div
+            key={day.id}
+            className={`days  flex md:flex-col justify-around items-center  glass mix-blend-plus-lighter m-2 lg:mb-4 lg:p-4 md:space-x-6`}
+          >
+            <div className="flex flex-col lg:flex-row  lg:px-2 items-center ">
+              <MdOutlineDateRange
+                className={`icon text-[1rem] my-2 md:mx-2 `}
+              />
+              <h4 className="text-[var(--clr-neon3)]">{day.day}</h4>
+            </div>
+            <div className="place">
+              <div className="flex flex-col lg:flex-row lg:justify-evenly lg:mr-6 items-center lg:text-sm ">
+                <MdAccessTime className={`icon text-[1rem] m-1 `} />
+                <p className="lg:flex-col">
+                  از ساعت{' '}
+                  <span className="text-[var(--clr-neon3)] py-1 lg:px-2 ">
+                    {day.start}
+                  </span>{' '}
+                  تا ساعت{' '}
+                  <span className="text-[var(--clr-neon3)] py-1 lg:px-2 ">
+                    {day.end}
+                  </span>{' '}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     ),
   },
   {
@@ -170,6 +241,7 @@ type Props = {}
 
 function Places({}: Props) {
   const [place, setPlace] = useState(matab)
+  // const Days = place === shafagh ? DaysForShafagh : DaysForMatab
   return (
     <div className="!bg-transparent relative w-full  rounded-lg  ">
       {/* <p className="z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">

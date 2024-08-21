@@ -34,16 +34,16 @@ const BentoCard = ({
   href,
   cta,
 }: {
-  name: string
-  className: string
-  background: ReactNode
+  name?: string | ReactNode
+  className?: string
+  background?: ReactNode
   Icon?: any
-  description: string
-  href: string
-  cta: string
+  description?: string
+  href?: string
+  cta?: string
 }) => (
   <div
-    key={name}
+    key={description}
     className={cn(
       ' group relative w-full h-full col-span-3 row-span-2 flex flex-col justify-between overflow-hidden rounded-xl',
       // light styles
@@ -58,9 +58,15 @@ const BentoCard = ({
       {!!Icon && (
         <Icon className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
       )}
-      <h3 className="text-xl font-semibold text-neutral-700 dark:text-neutral-300">
-        {name}
-      </h3>
+      {name && (
+        <Link
+          href="/booking"
+          className="z-20 flex justify-center items-center  cursor-pointer px-4 py-2 border border-white/50 rounded-md text-xl font-semibold text-neutral-700 dark:text-neutral-300"
+        >
+          {'دریافت نوبت '}
+          {name}
+        </Link>
+      )}
       <p className="max-w-lg text-neutral-400">{description}</p>
     </div>
 

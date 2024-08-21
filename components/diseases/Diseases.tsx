@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import Ilness from './Ilness'
 import Card from '../Card'
+import { BackgroundBeamsWithCollision } from '../BackgroundBeamsWithCollision'
 
 const diseases = [
   {
@@ -136,6 +137,7 @@ const Diseases: FC<DiseasesProps> = ({}) => {
           <h3 className="font-bold text-[var(--clr-neon3)] text-lg my-8 mr-2 md:mr-4">
             زنان و زایمان
           </h3>
+
           <motion.article
             drag="x"
             dragConstraints={{ left: 0, right: width }}
@@ -152,6 +154,7 @@ const Diseases: FC<DiseasesProps> = ({}) => {
               />
             ))}
           </motion.article>
+
           <div className={`flex flex-col text-sm font-farsi justify-between `}>
             <h3 className="font-bold text-[var(--clr-neon1)] text-lg my-8 mr-2 md:mr-4">
               زیبایی عمومی
