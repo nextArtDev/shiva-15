@@ -1,6 +1,7 @@
 'use client'
 import { FC } from 'react'
 import Tilt from 'react-parallax-tilt'
+import { BorderBeam } from './BorderBeam'
 
 interface CardProps {
   title: string
@@ -21,6 +22,7 @@ const Card: FC<CardProps> = ({ title, content, color }) => {
       <div className={`elements bg !bg-${color}`}></div>
       <div className="elements imgBx !px-4 flex justify-center items-center ">
         <p className={`text-${color} font-semibold  text-base`}>{title}</p>
+        <BorderBeam size={120} duration={6} delay={3} />
       </div>
       <div className=" elements content text-white  flex justify-center items-center ">
         <p className="p-4 "> {content}</p>

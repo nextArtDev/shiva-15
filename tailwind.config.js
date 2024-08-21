@@ -116,9 +116,15 @@ module.exports = {
             transform: 'scale(0.98)',
           },
         },
+        'border-beam': {
+          '100%': {
+            'offset-distance': '100%',
+          },
+        },
       },
       animation: {
         'infinite-scroll': 'infinite-scroll 25s linear infinite',
+        'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
         gradient: 'gradient 8s linear infinite',
         'spin-slow': 'spin 5s linear infinite',
         'service-line': 'service-line 15s linear infinite',

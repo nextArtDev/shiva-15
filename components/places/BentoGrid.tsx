@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import { cn } from '../../lib/utils'
 import Link from 'next/link'
+import { BorderBeam } from '../BorderBeam'
 // import { ArrowRightIcon } from '@radix-ui/react-icons'
 
 // import { cn } from '@/lib/utils'
@@ -83,6 +84,7 @@ const BentoCard = ({
       </Button> */}
     </div>
     <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-neutral-800/10" />
+    <BorderBeam size={250} duration={12} delay={9} />
   </div>
 )
 
