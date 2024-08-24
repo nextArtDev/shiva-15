@@ -11,6 +11,7 @@ import { LogoTicker } from '@/components/logo-tricker/LogoTicker'
 import Places from '@/components/places/Places'
 
 import BentoDemo from '@/components/places/BentoDemo'
+import Footer from '@/components/footer/Footer'
 
 export default function Home() {
   return (
@@ -33,6 +34,7 @@ export default function Home() {
         <Contact />
         <Comments />
         {/* <FeaturedIn /> */}
+        <Footer />
       </main>
     </>
   )

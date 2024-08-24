@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar'
 import './globals.css'
 
 import localFont from 'next/font/local'
-import Footer from '@/components/Footer'
+import Footer from '@/components/footer/Footer'
 import StarsCanvas from '@/components/StarBackground'
 import { Suspense } from 'react'
 
