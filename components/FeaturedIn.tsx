@@ -1,5 +1,5 @@
 import React from 'react'
-import EsfahanLogo from '../public/featuredLogo/esfahan.png'
+import EsfahanLogo from '../public/featuredLogo/esfahan.jpg'
 import KshanLogo from '../public/featuredLogo/kashan.png'
 import AnjomanLogo from '../public/featuredLogo/anjoman.png'
 import SaadiLogo from '../public/featuredLogo/saadi.png'

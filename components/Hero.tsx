@@ -5,11 +5,12 @@ import IconSquareInstagram from './icons/Instagram'
 import IconSquareWhatsapp from './icons/WhatsApp'
 import IconTelegram from './icons/Telegram'
 
+//Main Color: #200d42
 const Hero = () => {
   return (
     // <header className="flex flex-col lg:flex-row max-w-screen min-h-screen pt-20 gap-y-8  lg:items-start lg:mt-6 lg:justify-evenly ">
-    <header className="h-[110vdh] lg:[120vdh] bg-black text-white bg-[linear-gradient(to_bottom,#000,#200D42_34%,#4F21A1_65%,#A46EDB_82%)] py-[72px] sm:py-24 relative overflow-clip flex flex-col lg:flex-row max-w-screen min-h-screen pt-20 gap-y-8  lg:items-start lg:mt-6 lg:justify-evenly !pb-8">
-      <div className=" absolute h-[375px] w-[750px] sm:w-[1536px] sm:h-[768px] lg:w-[2400px] lg:h-[600px] rounded-[60%] left-1/2 -translate-x-1/2 border border-[#B48CDE] bg-[radial-gradient(closest-side,#000_82%,#9560EB)] top-[calc(100%-96px)] sm:top-[calc(100%-120px)]" />
+    <header className="h-[100vdh] bg-[#200d42] text-white bg-[linear-gradient(to_bottom,#200d42,#200d42_34%,#4F21A1_65%,#A46EDB_82%)] py-[72px] sm:py-24 relative overflow-clip flex flex-col lg:flex-row max-w-screen min-h-screen pt-20 gap-y-8  lg:items-start lg:mt-6 lg:justify-evenly !pb-8">
+      <div className=" absolute h-[375px] w-[750px] sm:w-[1536px] sm:h-[768px] lg:w-[2400px] lg:h-[600px] rounded-[60%] left-1/2 -translate-x-1/2 border border-[#B48CDE] bg-[radial-gradient(closest-side,#200d42_82%,#9560EB)] top-[calc(100%-96px)] sm:top-[calc(100%-120px)]" />
       <article className=" self-center flex flex-col items-center gap-y-4">
         <h1 className="text-4xl mb-4 md:text-5xl lg:text-6xl  font-bold text-white  animate-fade-in [--animation-delay:200ms] opacity-0 translate-y-4 neon-text-gradient ">
           دکتر شیوا توتونیان

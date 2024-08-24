@@ -35,11 +35,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa-IR" dir="rtl">
-      <body className={`${primaryFont.variable} bg-black text-white adad `}>
+      <body className={`${primaryFont.variable} bg-[#200d42] text-white adad `}>
         <Navbar />
-        <Suspense fallback="null">
+        {/* <Suspense fallback="null">
           <StarsCanvas />
-        </Suspense>
+        </Suspense> */}
         {children}
         {/* <Footer /> */}
       </body>

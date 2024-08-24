@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import EsfahanLogo from '@/public/featuredLogo/esfahan.png'
+import EsfahanLogo from '@/public/featuredLogo/esfahan11.png'
 import KshanLogo from '@/public/featuredLogo/kashan.png'
 import AnjomanLogo from '@/public/featuredLogo/anjoman.png'
 import SaadiLogo from '@/public/featuredLogo/saadi.png'
@@ -17,12 +17,15 @@ export default function LogoCarousel() {
   ]
 
   return (
-    <div className="bg-[#9560EB75] w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+    <div
+      className="bg-[#1d2228
+    ] w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_#200d42_128px,_#200d42_calc(100%-128px),transparent_100%)]"
+    >
       <ul className=" flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll">
         {logos.map((logo, index) => (
           <li
             key={index}
-            className="w-full  flex flex-col justify-between items-center gap-y-4"
+            className="w-full grayscale  flex flex-col justify-between items-center gap-y-4"
           >
             <Image width={150} src={logo.src} alt={logo.alt} />
             <p className="text-white/60 text-center text-sm lg:text-base ">

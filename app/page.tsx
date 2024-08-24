@@ -20,18 +20,19 @@ export default function Home() {
         text-primary-text "
       >
         <Hero />
-        <section className="-my-30 bg-[#9560EB75] ">
+        {/* <section className="-my-30 bg-[#9560EB75] "> */}
+        <section className="-my-30 ">
           <LogoTicker />
         </section>
         <Places />
         {/* <BentoDemo /> */}
-        <Booking />
+        {/* <Booking /> */}
         <Diseases />
 
         <Gallery />
         <Contact />
         <Comments />
-        <FeaturedIn />
+        {/* <FeaturedIn /> */}
       </main>
     </>
   )
