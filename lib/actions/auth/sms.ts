@@ -1,13 +1,11 @@
 'use server'
 
-import TrezSMSClient from 'trez-sms-client'
 import { z } from 'zod'
 import crypto from 'crypto'
 import { prisma } from '@/lib/prisma'
 import { PhoneSchema } from '@/lib/schemas/auth'
 import { getUserById } from '@/lib/queries/auth/user'
-// import MelipayamakApi from 'melipayamak-api-ts'
-import MelipayamakApi from 'melipayamak'
+import { MelipayamakApi } from '@mfrtn/melipayamak-api'
 
 export const sendSms = async (values: z.infer<typeof PhoneSchema>) => {
   const verificationCode = crypto.randomInt(100123, 999879)
@@ -19,50 +17,31 @@ export const sendSms = async (values: z.infer<typeof PhoneSchema>) => {
   }
 
   const { phone } = validatedFields.data
+
+  // const client = new TrezSMSClient(
+  //   process.env.SMS_USERNAME!,
+  //   process.env.SMS_PASSWORD!
+  // )
+  const api = new MelipayamakApi({
+    username: process.env.SMS_USERNAME!,
+    password: process.env.SMS_PASSWORD!,
+  })
+
   try {
-    const api = new MelipayamakApi(
-      process.env.SMS_USERNAME!,
-      process.env.SMS_PASSWORD!
-    )
-    // const client = new TrezSMSClient(
-    //   process.env.SMS_USERNAME!,
-    //   process.env.SMS_PASSWORD!
-    // )
-    // console.log('client', client.soap)
-    // // console.log({ phone, verificationCode })
-    // const messageId = await client.manualSendCode(
-    //   phone,
-    //   `کد تایید شما: ${
-    //     verificationCode as number
-    //   } \n مدت اعتبار این کد ۲ دقیقه می‌باشد`
-    // )
+    // console.log({ phone, verificationCode })
+    await api.send({
+      from: process.env.SMS_SENDER!,
+      to: phone,
+      text: `کد تایید شما: ${
+        verificationCode as number
+      } \n مدت اعتبار این کد ۲ دقیقه می‌باشد`,
+    })
 
     // if (messageId <= 2000) {
     //   return {
     //     error: 'ارسال کد تایید با خطا مواجه شد لطفا دوباره تلاش نمایید',
     //     // verificationCode: null,
     //   }
-    // }
-    const sms = api.sms()
-    const meli = await sms.send(
-      phone,
-      '50002710056401',
-      `کد تایید شما: ${
-        verificationCode as number
-      } \n مدت اعتبار این کد ۲ دقیقه می‌باشد`
-    )
-    // .then((res) => {
-    //   //RecId or Error Number
-    //   console.log(res)
-    // })
-    // .catch((err) => {
-    //   //
-    // })
-    console.log(meli)
-    // if (meli.Value > 0) {
-    //   console.log(meli.Value)
-    // } else {
-    //   throw new Error('not Valid')
     // }
     return { success: 'کد تایید به شماره شما ارسال شد.', verificationCode }
   } catch (error) {
