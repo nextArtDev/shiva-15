@@ -5,6 +5,7 @@ import localFont from 'next/font/local'
 import Footer from '@/components/footer/Footer'
 import StarsCanvas from '@/components/StarBackground'
 import { Suspense } from 'react'
+import { Toaster } from 'sonner'
 
 const primaryFont = localFont({
   src: '../public/fonts/farsi.woff2',
@@ -42,6 +43,7 @@ export default function RootLayout({
         </Suspense> */}
         {children}
         {/* <Footer /> */}
+        <Toaster />
       </body>
     </html>
   )
