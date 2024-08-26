@@ -161,6 +161,9 @@ importers:
       react-spinners:
         specifier: ^0.14.1
         version: 0.14.1(react-dom@19.0.0-rc-8269d55d-20240802(react@19.0.0-rc-8269d55d-20240802))(react@19.0.0-rc-8269d55d-20240802)
+      react-textarea-autosize:
+        specifier: ^8.5.3
+        version: 8.5.3(@types/react@18.2.7)(react@19.0.0-rc-8269d55d-20240802)
       react-tsparticles:
         specifier: ^2.12.2
         version: 2.12.2(react@19.0.0-rc-8269d55d-20240802)
@@ -3256,6 +3259,12 @@ packages:
       '@types/react':
         optional: true
 
+  react-textarea-autosize@8.5.3:
+    resolution: {integrity: sha512-XT1024o2pqCuZSuBt9FwHlaDeNtVrtCXu0Rnz88t1jUGheCLa3PhjE1GH8Ctm2axEtvdCl5SUHYschyQ0L5QHQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
   react-tsparticles@2.12.2:
     resolution: {integrity: sha512-/nrEbyL8UROXKIMXe+f+LZN2ckvkwV2Qa+GGe/H26oEIc+wq/ybSG9REDwQiSt2OaDQGu0MwmA4BKmkL6wAWcA==}
     deprecated: '@tsparticles/react is the new version, please use that'
@@ -3843,6 +3852,29 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  use-composed-ref@1.3.0:
+    resolution: {integrity: sha512-GLMG0Jc/jiKov/3Ulid1wbv3r54K9HlMW29IWcDFPEqFkSO2nS0MuefWgMJpeHQ9YJeXDL3ZUF+P3jdXlZX/cQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+  use-isomorphic-layout-effect@1.1.2:
+    resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  use-latest@1.2.1:
+    resolution: {integrity: sha512-xA+AVm/Wlg3e2P/JiItTziwS7FK92LWrDB0p+hgXloIMuVCeJJ8v6f0eeHyPZaJrM+usM1FkFfbNCrJGs8A/zw==}
+    peerDependencies:
+      '@types/react': '*'
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     peerDependenciesMeta:
       '@types/react':
@@ -7681,6 +7713,15 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.2.7
 
+  react-textarea-autosize@8.5.3(@types/react@18.2.7)(react@19.0.0-rc-8269d55d-20240802):
+    dependencies:
+      '@babel/runtime': 7.25.0
+      react: 19.0.0-rc-8269d55d-20240802
+      use-composed-ref: 1.3.0(react@19.0.0-rc-8269d55d-20240802)
+      use-latest: 1.2.1(@types/react@18.2.7)(react@19.0.0-rc-8269d55d-20240802)
+    transitivePeerDependencies:
+      - '@types/react'
+
   react-tsparticles@2.12.2(react@19.0.0-rc-8269d55d-20240802):
     dependencies:
       react: 19.0.0-rc-8269d55d-20240802
@@ -8421,6 +8462,23 @@ snapshots:
     dependencies:
       react: 19.0.0-rc-8269d55d-20240802
       tslib: 2.6.3
+    optionalDependencies:
+      '@types/react': 18.2.7
+
+  use-composed-ref@1.3.0(react@19.0.0-rc-8269d55d-20240802):
+    dependencies:
+      react: 19.0.0-rc-8269d55d-20240802
+
+  use-isomorphic-layout-effect@1.1.2(@types/react@18.2.7)(react@19.0.0-rc-8269d55d-20240802):
+    dependencies:
+      react: 19.0.0-rc-8269d55d-20240802
+    optionalDependencies:
+      '@types/react': 18.2.7
+
+  use-latest@1.2.1(@types/react@18.2.7)(react@19.0.0-rc-8269d55d-20240802):
+    dependencies:
+      react: 19.0.0-rc-8269d55d-20240802
+      use-isomorphic-layout-effect: 1.1.2(@types/react@18.2.7)(react@19.0.0-rc-8269d55d-20240802)
     optionalDependencies:
       '@types/react': 18.2.7
 
