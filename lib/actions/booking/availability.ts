@@ -62,26 +62,19 @@ export type AvailableDays = {
 
 interface CreateAvailability {
   days: AvailableDays[]
-  doctorId: string
+
   slicer: string
 }
 
 export const createAvailability = async ({
   days,
-  doctorId,
+
   slicer,
 }: CreateAvailability) => {
   const user = await currentUser()
   if (!user?.id || user.role !== 'ADMIN') redirect('/login')
   try {
-    const doctorAvailability = await prisma.doctor.findFirst({
-      where: {
-        id: doctorId,
-        availability: {
-          some: {},
-        },
-      },
-    })
+    const doctorAvailability = await prisma.availability.findFirst({})
     // console.log(!!doctorAvailability)
     // console.log(!doctorAvailability)
 
@@ -91,7 +84,6 @@ export const createAvailability = async ({
           const availability = await prisma.availability.create({
             data: {
               availableDay: day.dayName,
-              doctorId: doctorId,
             },
           })
           const slots = SplitterTime({
@@ -132,11 +124,7 @@ export const createAvailability = async ({
         })
       )
     } else {
-      const allAvailabilities = await prisma.availability.findMany({
-        where: {
-          doctorId,
-        },
-      })
+      const allAvailabilities = await prisma.availability.findMany({})
       // console.log(
       //   'all Availability days',
       //   allAvailabilities.map((all) => all.availableDay)
@@ -177,7 +165,6 @@ export const createAvailability = async ({
             const dayToDisconnect = await prisma.availability.findFirst({
               where: {
                 availableDay: d,
-                doctorId,
               },
               include: {
                 times: { include: { bookedDays: true } },
@@ -372,25 +359,11 @@ export const createAvailability = async ({
             //   //   },
             //   // })
 
-            const disconnectedDoctorDays = await prisma.availability.update({
-              where: {
-                // availableDay: day,
-                // doctorId: +doctorId,
-                id: dayToDisconnect?.id,
-              },
-              data: {
-                doctorId: null,
-              },
-              //   // include: {
-              //   //   times: { include: { bookedDays: true } },
-              //   // },
-            })
-
             // console.log('disconnectedDoctorDays ', disconnectedDoctorDays)
 
             const deletedAvailability = await prisma.availability.delete({
               where: {
-                id: disconnectedDoctorDays?.id,
+                id: disconnectedTimes?.id,
               },
             })
             // console.log('deletedAvailability', deletedAvailability)
@@ -403,7 +376,6 @@ export const createAvailability = async ({
           const availability = await prisma.availability.findFirst({
             where: {
               availableDay: day.dayName,
-              doctorId,
             },
             include: {
               times: true,
@@ -418,7 +390,6 @@ export const createAvailability = async ({
             const availability = await prisma.availability.create({
               data: {
                 availableDay: day.dayName,
-                doctorId,
               },
             })
             const times = await Promise.all(
@@ -590,7 +561,6 @@ export async function disableSpecialDay({ date, doctorId, day }: DisableDay) {
 
     const availabilityDay = await prisma.availability.findFirst({
       where: {
-        doctorId,
         availableDay: day,
       },
       include: {

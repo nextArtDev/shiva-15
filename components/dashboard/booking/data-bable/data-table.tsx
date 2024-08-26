@@ -85,11 +85,11 @@ export function DataTable<TData, TValue>({
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single"
-              onSelect={(d) => {
+              onSelect={() => {
                 table.getColumn('date')?.getFilterValue() ?? undefined
               }}
               selected={date}
-              onDayClick={(d) => {
+              onDayClick={(d: any) => {
                 table.getColumn('date')?.setFilterValue(format(d, 'yyyy/MM/dd'))
                 setDate(d)
                 // console.log(format(d, 'yyyy/MM/dd'))

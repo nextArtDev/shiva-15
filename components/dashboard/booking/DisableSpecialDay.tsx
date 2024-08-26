@@ -4,7 +4,6 @@ import { CalendarIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns-jalali'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
- 
 
 import { cn, getDayNameFromIndex } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -24,7 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { Availability, BookedDay, Doctor, TimeSlot } from '@prisma/client'
+import { Availability, BookedDay, TimeSlot } from '@prisma/client'
 import { FC, useEffect, useState, useTransition } from 'react'
 
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
@@ -39,14 +38,13 @@ import { disableSpecialDay } from '@/lib/actions/booking/availability'
 import { toast } from 'sonner'
 
 interface DisableSpecialDayProps {
-  doctors: Doctor[]
   availabilities?:
     | (Availability & {
         times: (TimeSlot & { bookedDays: (BookedDay | null)[] })[] | null
       })[]
     | null
 }
-const DisableSpecialDay: FC<DisableSpecialDayProps> = ({ doctors }) => {
+const DisableSpecialDay: FC<DisableSpecialDayProps> = ({}) => {
   const [isPending, startTransition] = useTransition()
 
   const formSchema = z.object({
@@ -87,35 +85,6 @@ const DisableSpecialDay: FC<DisableSpecialDayProps> = ({ doctors }) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="pt-12 space-y-16 mb-36 flex flex-col items-center justify-between  "
       >
-        <FormField
-          control={form.control}
-          name="doctorId"
-          render={({ field }) => (
-            <FormItem className=" mx-auto max-w-sm w-fit ">
-              <FormLabel>نام دکتر</FormLabel>
-              <Select
-                dir="rtl"
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="دکتر را انتخاب کنید" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {doctors.map((doctor) => (
-                    <SelectItem key={doctor.id} value={String(doctor.id)}>
-                      {doctor.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         {!form.watch('dob') ? (
           <div className="">
             <FormField
@@ -149,10 +118,10 @@ const DisableSpecialDay: FC<DisableSpecialDayProps> = ({ doctors }) => {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        onDayClick={(date) =>
+                        onDayClick={(date: any) =>
                           setModal(format(date, 'yyyy/MM/dd'))
                         }
-                        disabled={(date) =>
+                        disabled={(date: any) =>
                           date <= new Date() || date < new Date('1900-01-01')
                         }
                         dir="rtl"
@@ -180,7 +149,9 @@ const DisableSpecialDay: FC<DisableSpecialDayProps> = ({ doctors }) => {
                 </p>
               </CardContent>
               <CardFooter className="max-w-sm mx-auto">
-                <Button type="submit">تایید </Button>
+                <Button disabled={isPending} type="submit">
+                  تایید{' '}
+                </Button>
               </CardFooter>
             </Card>
           </article>

@@ -12,7 +12,6 @@ export const createBookingFormSchema = z.object({
 })
 
 export const availabilityFormSchema = z.object({
-  doctorId: z.string(),
   slicer: z.string(),
   days: z.object({
     saturday: z.object({

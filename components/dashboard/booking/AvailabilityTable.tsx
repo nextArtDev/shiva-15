@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { TimeValue } from 'react-aria'
-import { Doctor } from '@prisma/client'
+
 import {
   Select,
   SelectContent,
@@ -44,10 +44,8 @@ type DayData = {
 
 const slices = [2, 5, 7, 10, 15, 30]
 
-interface AvailabilityTableProps {
-  doctors: Doctor[]
-}
-const AvailabilityTable: FC<AvailabilityTableProps> = ({ doctors }) => {
+interface AvailabilityTableProps {}
+const AvailabilityTable: FC<AvailabilityTableProps> = ({}) => {
   const [isPending, startTransition] = useTransition()
 
   const form = useForm<z.infer<typeof availabilityFormSchema>>({
@@ -85,7 +83,6 @@ const AvailabilityTable: FC<AvailabilityTableProps> = ({ doctors }) => {
     startTransition(() => {
       createAvailability({
         days,
-        doctorId: data.doctorId,
         slicer: data.slicer,
       })
         .then((res) => {
@@ -112,35 +109,6 @@ const AvailabilityTable: FC<AvailabilityTableProps> = ({ doctors }) => {
             فرم نوبت دهی
           </h1>
           <div className="grid grid-cols-6 gap-2 my-4 pb-4 ">
-            <FormField
-              control={form.control}
-              name="doctorId"
-              render={({ field }) => (
-                <FormItem className="col-span-4 ">
-                  <FormLabel>نام دکتر</FormLabel>
-                  <Select
-                    dir="rtl"
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="دکتر را انتخاب کنید" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {doctors.map((doctor) => (
-                        <SelectItem key={doctor.id} value={String(doctor.id)}>
-                          {doctor.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="slicer"
