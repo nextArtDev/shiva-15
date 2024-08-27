@@ -154,7 +154,7 @@ export const LoginForm = () => {
               فعالسازی اکانت
             </Link>
           ) : (
-            <Button disabled={isPending} type="submit" className="w-full">
+            <Button disabled={isPending} type="submit" className="w-full ">
               {showTwoFactor ? 'تایید' : 'ورود'}
             </Button>
           )}

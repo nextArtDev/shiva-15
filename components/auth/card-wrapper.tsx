@@ -26,7 +26,7 @@ export const CardWrapper = ({
   className,
 }: CardWrapperProps) => {
   return (
-    <Card className="max-w-[400px] w-[98%] mx-auto shadow-2xl bg-blur-sm border-none  rounded-2xl bg-opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-300/5 via-yellow-100/5 to-orange-900/5 dark:from-orange-800/5 dark:via-yellow-700/5 dark:to-orange-900/5">
+    <Card className=" glass max-w-[400px] w-[98%] mx-auto shadow-2xl   border-none  rounded-2xl  ">
       <CardHeader>
         <Header label={headerLabel} />
       </CardHeader>

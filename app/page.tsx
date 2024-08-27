@@ -12,8 +12,21 @@ import Places from '@/components/places/Places'
 
 import BentoDemo from '@/components/places/BentoDemo'
 import Footer from '@/components/footer/Footer'
+import { prisma } from '@/lib/prisma'
+import { currentUser } from '@/lib/auth'
 
-export default function Home() {
+export default async function Home() {
+  const reviews = await prisma.review.findMany({
+    include: {
+      user: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  })
+  const user = await currentUser()
+
   return (
     <>
       <main
@@ -32,9 +45,9 @@ export default function Home() {
 
         <Gallery />
         <Contact />
-        <Comments />
+        {!!reviews && <Comments reviews={reviews} />}
         {/* <FeaturedIn /> */}
-        <Footer />
+        <Footer user={user} />
       </main>
     </>
   )

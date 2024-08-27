@@ -30,9 +30,10 @@ import { StarRating } from './StarRating'
 import { toast } from 'sonner'
 import { createReview } from '@/lib/actions/rating'
 import { BorderBeam } from '../BorderBeam'
+import { ExtendedUserWithoutEmail } from '@/types/next-auth'
 
 interface FooterProps {
-  user: (User & { image: { url: string } | null }) | null
+  user?: ExtendedUserWithoutEmail
 }
 
 export default function Footer({ user }: FooterProps) {

@@ -1,54 +1,35 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import { FiChevronRight, FiChevronLeft } from 'react-icons/fi'
-// import image1 from '/images/comments/1.png'
-import image1 from '../public/images/comments/1.png'
-import image2 from '../public/images/comments/2.png'
-import image3 from '../public/images/comments/3.png'
-import image4 from '../public/images/comments/4.png'
-import image5 from '../public/images/comments/5.png'
-import image6 from '../public/images/comments/6.png'
-import image7 from '../public/images/comments/7.png'
-import image8 from '../public/images/comments/8.png'
-import image9 from '../public/images/comments/9.png'
-import image10 from '../public/images/comments/10.png'
-import image11 from '../public/images/comments/11.png'
-import image12 from '../public/images/comments/12.png'
-import image13 from '../public/images/comments/13.png'
-import image14 from '../public/images/comments/14.png'
-import Image from 'next/image'
 
-const data = [
-  { id: 1, imageSrc: image1 },
-  { id: 2, imageSrc: image2 },
-  { id: 3, imageSrc: image3 },
-  { id: 4, imageSrc: image4 },
-  { id: 5, imageSrc: image5 },
-  { id: 6, imageSrc: image6 },
-  { id: 7, imageSrc: image7 },
-  { id: 8, imageSrc: image8 },
-  { id: 9, imageSrc: image9 },
-  { id: 10, imageSrc: image10 },
-  { id: 11, imageSrc: image11 },
-  { id: 12, imageSrc: image12 },
-  { id: 13, imageSrc: image13 },
-  { id: 14, imageSrc: image14 },
-]
-type Props = {}
+import { Review } from '@prisma/client'
 
-const Comments = (props: Props) => {
-  const [people, setPeople] = useState(data)
+import { Dot, Heart } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { StarRating } from './StarRating'
+import { formatTimeToNow } from '@/lib/utils'
+
+type Props = {
+  reviews: (Review & {
+    user: {
+      name: string
+    } | null
+  })[]
+}
+
+const Comments = (reviews: Props) => {
+  // const [people, setPeople] = useState(data)
   const [index, setIndex] = React.useState(0)
 
   useEffect(() => {
-    const lastIndex = people.length - 1
+    const lastIndex = reviews.reviews.length - 1
     if (index < 0) {
       setIndex(lastIndex)
     }
     if (index > lastIndex) {
       setIndex(0)
     }
-  }, [index, people])
+  }, [index, reviews.reviews.length])
 
   useEffect(() => {
     let slider = setInterval(() => {
@@ -60,15 +41,15 @@ const Comments = (props: Props) => {
   }, [index])
 
   return (
-    <section
-      className={` h-fit my-12  mx-auto w-[100vw] md:w-[70vw] xl:w-[60vw] `}
-    >
+    <section className={` h-full my-12 max-w-md mx-auto w-[94vw] `}>
       <div className={'title'}>
-        <h2>نظرات مردمی</h2>
+        <h2>نظرات </h2>
       </div>
-      <div className={`center mx-auto  h-36 flex overflow-hidden relative`}>
-        {people.map((person, personIndex) => {
-          const { id, imageSrc } = person
+      <div
+        className={`center mx-auto  h-48 md:h-56 flex overflow-hidden relative`}
+      >
+        {reviews.reviews.map((review, personIndex) => {
+          // const { id, imageSrc } = person
 
           let position = 'nextSlide'
           if (personIndex === index) {
@@ -76,33 +57,64 @@ const Comments = (props: Props) => {
           }
           if (
             personIndex === index - 1 ||
-            (index === 0 && personIndex === people.length - 1)
+            (index === 0 && personIndex === reviews.reviews.length - 1)
           ) {
             position = 'lastSlide'
           }
 
           return (
             <article
-              className={`article w-fit h-fit flex justify-center items-center ${position}`}
-              key={id}
+              className={`article w-full flex justify-center items-center ${position}`}
+              key={review.id}
             >
-              <Image
+              {/* <Image
                 src={imageSrc}
                 fill
                 alt="نظرات"
                 className={`${'personImg'} object-contain z-20 `}
-              />
+              /> */}
+
+              {/* <p key={review.id}>{review.comment}</p> */}
+
+              <div className=" flex w-full flex-col items-center justify-between gap-2.5">
+                <div className="pb-4 !pt-1 !mt-0">
+                  <StarRating
+                    value={review.rating}
+                    disabled
+                    iconProps={{ className: 'size-3' }}
+                  />
+                </div>
+                <p className="m-0 text-[var(--clr-neon1)] text-center px-2.5 line-clamp-2 text-base sm:text-lg  md:text-2xl font-medium tracking-tight">
+                  &quot;{review.comment}&quot;
+                </p>
+                <div className="mx-auto mt-5">
+                  <div className="flex flex-col items-center justify-center space-x-3">
+                    {/* <div className="font-regular text-sm text-gray-900/80">
+                  {author}
+                </div> */}
+
+                    <div className="flex text-xs sm:text-sm md:text-base justify-center items-center">
+                      <span className=" ">{review.user!.name}</span>
+                      <Dot className="" />
+
+                      <span className="  ">
+                        {formatTimeToNow(new Date(review.created_at))}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </article>
           )
         })}
         <button
-          className={`${'prev'} text-[var(--clr-neon)] absolute left-0 bottom-2 md:bottom-1/2 bg-transparent w-10 grid place-items-center rounded-md cursor-pointer transition origin-center hover:scale-125 hover:glass `}
+          className={`${'prev'} text-[var(--clr-neon)] absolute left-0 bottom-1/2 bg-transparent w-10 grid place-items-center rounded-md cursor-pointer transition origin-center hover:scale-125 hover:glass `}
           onClick={() => setIndex(index - 1)}
         >
           <FiChevronLeft size={24} />
         </button>
         <button
-          className={`${'next'} text-[var(--clr-neon)] right-0 absolute bottom-2 md:bottom-1/2 bg-transparent w-10 grid place-items-center rounded-md cursor-pointer transition origin-center hover:scale-125 hover:glass `}
+          className={`${'next'} text-[var(--clr-neon)] right-0 absolute bottom-1/2 bg-transparent w-10 grid place-items-center rounded-md cursor-pointer transition origin-center hover:scale-125 hover:glass `}
           onClick={() => setIndex(index + 1)}
         >
           <FiChevronRight size={24} />
