@@ -14,6 +14,7 @@ import BentoDemo from '@/components/places/BentoDemo'
 import Footer from '@/components/footer/Footer'
 import { prisma } from '@/lib/prisma'
 import { currentUser } from '@/lib/auth'
+import { getAllAvailabilities } from '@/lib/queries/booking'
 
 export default async function Home() {
   const reviews = await prisma.review.findMany({
@@ -27,6 +28,21 @@ export default async function Home() {
   })
   const user = await currentUser()
 
+  const beforeRated = await prisma.review.findFirst({
+    where: {
+      userId: user?.id,
+    },
+    select: {
+      rating: true,
+    },
+  })
+
+  const availabilities = await getAllAvailabilities()
+
+  const disabledDaysByDoctor = availabilities?.map((availability) =>
+    availability.disableDays.map((disabled) => disabled.day)
+  )
+
   return (
     <>
       <main
@@ -38,7 +54,10 @@ export default async function Home() {
         <section className="-my-30 ">
           <LogoTicker />
         </section>
-        <Places />
+        <Places
+          availabilities={availabilities}
+          disabledDaysByDoctor={disabledDaysByDoctor}
+        />
         {/* <BentoDemo /> */}
         {/* <Booking /> */}
         <Diseases />

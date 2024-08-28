@@ -38,7 +38,7 @@ export async function createBooking(
   formData: FormData,
   time: string,
   day: string,
-  doctorId: string,
+
   path: string
 ): Promise<CreateBookingFormState> {
   const result = createBookingFormSchema.safeParse({
@@ -58,7 +58,6 @@ export async function createBooking(
     const availability = await prisma.availability.findFirst({
       where: {
         availableDay: getDayNameFromIndex(+result.data.dob),
-        doctorId: doctorId,
       },
     })
     // console.log(availability)
@@ -72,7 +71,7 @@ export async function createBooking(
       where: {
         day,
         timeSlotId: timeSlot?.id,
-        doctorId,
+
         userId: user.id,
       },
     })
@@ -88,7 +87,7 @@ export async function createBooking(
         timeSlotId: timeSlot?.id,
         isBooked: true,
         // availabilityId: availability?.id,
-        doctorId,
+
         userId: user.id,
       },
     })
@@ -113,5 +112,5 @@ export async function createBooking(
 
   revalidatePath(path)
   // redirect(`/doctors/${doctorId}?confetti=true`)
-  redirect(`/doctors/${doctorId}`)
+  redirect(`/`)
 }

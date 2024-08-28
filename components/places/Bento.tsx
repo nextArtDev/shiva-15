@@ -17,12 +17,14 @@ interface RevealBentoProps {
   days: BookingDays[]
   phones?: string[]
   address?: string[]
+  booking: React.ReactNode
 }
 export const RevealBento = ({
   loc,
   days,
   phones,
   address,
+  booking,
 }: RevealBentoProps) => {
   //   console.log(loc, days, phones, address)
   return (
@@ -38,6 +40,7 @@ export const RevealBento = ({
       >
         <HeaderBlock days={days} />
         {!!phones && <SocialsBlock phones={phones} />}
+        {!!booking && <BookingBlock booking={booking} />}
         {(!!loc || !!address) && <LocationBlock loc={loc} address={address} />}
         {/* <AboutBlock /> */}
         {/* <EmailListBlock /> */}
@@ -138,10 +141,17 @@ const SocialsBlock = ({ phones }: SocialsBlock) => (
         </span>
       ))}
     </Block>
+  </>
+)
+type BookingProps = {
+  booking: React.ReactNode
+}
+const BookingBlock = ({ booking }: BookingProps) => (
+  <>
     <Block
       whileHover={{
-        rotate: '2.5deg',
-        scale: 1.1,
+        // rotate: '2.5deg',
+        scale: 1.02,
       }}
       className="col-span-6 bg-blue-500 "
     >
@@ -149,7 +159,7 @@ const SocialsBlock = ({ phones }: SocialsBlock) => (
         href="#"
         className="grid h-full place-content-center text-3xl text-white"
       >
-        رزرو نوبت
+        {booking}
       </Link>
     </Block>
   </>

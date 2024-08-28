@@ -1,10 +1,9 @@
 'use server'
 import { prisma } from '@/lib/prisma'
 
-export const getAllAvailabilitiesByDoctorId = async (id: string) => {
+export const getAllAvailabilities = async () => {
   try {
     const availabilities = await prisma.availability.findMany({
- 
       include: {
         times: {
           include: { bookedDays: true },
@@ -33,7 +32,6 @@ export const getAllBookedDays = async () => {
     const bookedDays = await prisma.bookedDay.findMany({
       where: {},
       include: {
-  
         timeSlot: true,
         user: true,
       },
@@ -64,7 +62,6 @@ export const getAllCancelledBookedDays = async () => {
             timeSlotId: slot.id,
           },
           include: {
-    
             timeSlot: true,
             user: true,
           },
@@ -84,9 +81,7 @@ export const getAllCancelledBookedDays = async () => {
 export const getAllBookedDaysByDoctorId = async (id: string) => {
   try {
     const bookedDays = await prisma.bookedDay.findMany({
- 
       include: {
- 
         timeSlot: true,
         user: true,
       },

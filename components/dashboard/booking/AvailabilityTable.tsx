@@ -29,11 +29,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
+// import { Switch } from '@/components/ui/switch'
 import { createAvailability } from '@/lib/actions/booking/availability'
 import { TimeField } from './data-bable/time-picker/time-field'
 import { availabilityFormSchema } from '@/lib/schemas/booking'
 import { toast } from 'sonner'
+
+import { Checkbox } from '@/components/ui/CheckBox'
+import { Switch } from '@/components/ui/switch'
 
 type DayData = {
   dayName: string
@@ -103,7 +106,7 @@ const AvailabilityTable: FC<AvailabilityTableProps> = ({}) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4  ">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 ">
         <section className=" rounded-lg py-6 px-2  max-w-md mx-auto">
           <h1 className="text-center font-semibold text-base md:text-lg ">
             فرم نوبت دهی
@@ -164,6 +167,14 @@ const AvailabilityTable: FC<AvailabilityTableProps> = ({}) => {
                               checked={!!field.value}
                               onCheckedChange={field.onChange}
                             />
+                            {/* 
+                            <Checkbox
+                              checked={!!field.value}
+                              onCheckedChange={(d) => {
+                                field.onChange(d)
+             
+                              }}
+                            /> */}
                           </FormControl>
                           <FormLabel className="pr-1">
                             {translateDays(
@@ -196,11 +207,12 @@ const AvailabilityTable: FC<AvailabilityTableProps> = ({}) => {
                                 hourCycle={24}
                                 size="sm"
                                 isDisabled={
-                                  !form.watch(
-                                    `days.${day}.selected` as keyof z.infer<
-                                      typeof availabilityFormSchema
-                                    >
-                                  )
+                                  // !form.watch(
+                                  //   `days.${day}.selected` as keyof z.infer<
+                                  //     typeof availabilityFormSchema
+                                  //   >
+                                  // )
+                                  !form.watch(`days.${day}.selected` as any)
                                 }
                                 //@ts-ignore
                                 value={field.value}
@@ -229,11 +241,12 @@ const AvailabilityTable: FC<AvailabilityTableProps> = ({}) => {
                             <FormControl>
                               <TimeField
                                 isDisabled={
-                                  !form.watch(
-                                    `days.${day}.selected` as keyof z.infer<
-                                      typeof availabilityFormSchema
-                                    >
-                                  )
+                                  // !form.watch(
+                                  //   `days.${day}.selected` as keyof z.infer<
+                                  //     typeof availabilityFormSchema
+                                  //   >
+                                  // )
+                                  !form.watch(`days.${day}.selected` as any)
                                 }
                                 defaultValue={new Time(0, 0)}
                                 hourCycle={24}
