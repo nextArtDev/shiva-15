@@ -8,6 +8,7 @@ import classNames from 'classnames'
 import IconSquareInstagram from './icons/Instagram'
 import IconSquareWhatsapp from './icons/WhatsApp'
 import IconTelegram from './icons/Telegram'
+import { User } from 'lucide-react'
 
 const menuLinks = [
   { id: 1, name: 'خانه', href: '/' },
@@ -15,6 +16,7 @@ const menuLinks = [
   { id: 3, name: 'درباره من', href: 'about' },
   // { id: 6, name: 'بلاگ', href: 'blogs' },
   { id: 5, name: 'تماس با من', href: 'connect' },
+  { id: 6, name: 'ورود / عضویت', href: 'register' },
 ]
 type Props = {}
 
@@ -57,7 +59,7 @@ const Navbar = (props: Props) => {
           >
             <ul
               className={classNames(
-                'bg-gray-900 md:bg-transparent pr-8 flex flex-col  md:flex-row py-4 items-center h-full [&_a]:flex [&_a]:items-center [&_a:hover]:text-grey [&_a]:text-xl md:[&_a]:text-base [&_li]:ml-6 [&_li]:border-b md:[&_li]:border-none [&_li]:border-white/20 [&_a:hover]:transition-[color, transform] [&_a]:h-[var(--navigation-height)] [&_a]:w-full md:[&_a]:translate-y-0 [&_a]:translate-y-8  [&_a]:transition-transform [&_a]:duration-300 ease-in  ',
+                'bg-[#4F21A1] md:!bg-transparent pr-8 flex flex-col  md:flex-row py-4 items-center h-full [&_a]:flex [&_a]:items-center [&_a:hover]:text-grey [&_a]:text-xl md:[&_a]:text-base [&_li]:ml-6 [&_li]:border-b md:[&_li]:border-none [&_li]:border-white/20 [&_a:hover]:transition-[color, transform] [&_a]:h-[var(--navigation-height)] [&_a]:w-full md:[&_a]:translate-y-0 [&_a]:translate-y-8  [&_a]:transition-transform [&_a]:duration-300 ease-in  ',
                 hamburgerMenuIsOpen && '[&_a]:translate-y-0'
               )}
             >
@@ -87,14 +89,18 @@ const Navbar = (props: Props) => {
             Sign up
           </Button>
         </div> */}
-
-        <button
-          className="text-3xl md:hidden hover:text-grey"
-          onClick={() => setHamburgerMenuIsOpen((open) => !open)}
-        >
-          <span className="sr-only">Toggle menu</span>
-          <HamburgerIcon hamburgerMenuIsOpen={hamburgerMenuIsOpen} />
-        </button>
+        <div className="text-3xl md:hidden  w-full flex justify-between items-center">
+          <button
+            className="hover:text-grey"
+            onClick={() => setHamburgerMenuIsOpen((open) => !open)}
+          >
+            <span className="sr-only">Toggle menu</span>
+            <HamburgerIcon hamburgerMenuIsOpen={hamburgerMenuIsOpen} />
+          </button>
+          <Link href={'/login'} className="hover:text-grey cursor-pointer">
+            <User />
+          </Link>
+        </div>
       </Container>
     </header>
   )

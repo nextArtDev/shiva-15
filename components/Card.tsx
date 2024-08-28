@@ -21,10 +21,10 @@ const Card: FC<CardProps> = ({ title, content, color }) => {
       {/* #c04dff */}
       <div className={`elements bg !bg-${color}`}></div>
       <div className="elements imgBx !px-4 flex justify-center items-center ">
-        <p className={`text-${color} font-semibold  text-base`}>{title}</p>
+        <p className={`text-${color} font-semibold  text-base `}>{title}</p>
         <BorderBeam size={120} duration={6} delay={3} />
       </div>
-      <div className=" elements content text-white  flex justify-center items-center ">
+      <div className="!text-right p-1 elements content text-white  flex justify-center items-center ">
         <p className="p-4 "> {content}</p>
       </div>
       {/* <div className="card !bg-transparent blur-3xl centerIlness"> */}
