@@ -6,52 +6,8 @@ import { SplitterTime } from '@/lib/utils'
 import { revalidatePath } from 'next/cache'
 
 import { redirect } from 'next/navigation'
-
-// const createSlot = async ({
-//   day,
-//   slicer,
-//   availableModel,
-// }: {
-//   day: AvailableDays
-//   slicer: string
-//   availableModel: Availability
-// }) => {
-//   const slots = SplitterTime({
-//     range: +slicer,
-//     start: day.startTime,
-//     end: day.endTime,
-//   })
-
-//   const slotDocuments = []
-
-//   for (const slot of slots) {
-//     const existingSlot = await prisma.timeSlot.findUnique({
-//       where: {
-//         slot,
-//       },
-//     })
-
-//     if (existingSlot) {
-//       slotDocuments.push(existingSlot.id)
-//       // await prisma.timeSlot.update({
-//       //   where: { id: existingSlot.id },
-//       //   data: {
-//       //     Availability: { connect: { id: availableModel.id } },
-//       //   },
-//       // })
-//     } else {
-//       const newSlot = await prisma.timeSlot.create({
-//         data: {
-//           // slot,
-//           // Availability: { connect: { id: availableModel.id } },
-//           // followers: { connect: { id: authorId } },
-//         },
-//       })
-//       slotDocuments.push(newSlot.id)
-//     }
-//     return slotDocuments
-//   }
-// }
+import { sendCancelBookingSms } from '../auth/sms'
+import { getUserById } from '@/lib/queries/auth/user'
 
 export type AvailableDays = {
   dayName: string
@@ -62,24 +18,40 @@ export type AvailableDays = {
 
 interface CreateAvailability {
   days: AvailableDays[]
-
+  doctorId: string
   slicer: string
 }
 
 export const createAvailability = async ({
   days,
-
+  doctorId,
   slicer,
 }: CreateAvailability) => {
   const user = await currentUser()
-  if (!user?.id || user.role !== 'ADMIN') redirect('/login')
+  if (!user?.id) {
+    redirect('/login')
+  }
+  if (user.role !== 'ADMIN') {
+    return {
+      errors: {
+        _form: ['شمااجازه دسترسی ندارید!'],
+      },
+    }
+  }
   try {
-    const doctorAvailability = await prisma.availability.findFirst({})
-    // console.log(!!doctorAvailability)
-    // console.log(!doctorAvailability)
+    // const doctorAvailability = await prisma.doctor.findFirst({
+    //   where: {
+    //     id: doctorId,
+    //     availability: {
+    //       some: {},
+    //     },
+    //   },
+    // })
+    // console.log(doctorAvailability)
+    const doctorAvailability = false
 
     if (!doctorAvailability) {
-      await Promise.all(
+      const newAvailabilityDays = await Promise.all(
         days.map(async (day) => {
           const availability = await prisma.availability.create({
             data: {
@@ -123,8 +95,11 @@ export const createAvailability = async ({
           // })
         })
       )
+      // console.log('newAvailabilityDays', newAvailabilityDays)
     } else {
-      const allAvailabilities = await prisma.availability.findMany({})
+      const allAvailabilities = await prisma.availability.findMany({
+        where: {},
+      })
       // console.log(
       //   'all Availability days',
       //   allAvailabilities.map((all) => all.availableDay)
@@ -203,32 +178,39 @@ export const createAvailability = async ({
               const OldBookedSlots = allOldSlots.flat().filter((slot) => {
                 return slot.bookedDays && slot.bookedDays.length > 0
               })
-              // console.log('OldBookedSlots', OldBookedSlots)
-              // const OldBookedSlots = await Promise.all(
-              //   allOldSlots?.flat().map(async (slot: any) => {
-              //     return await prisma.bookedDay.findMany({
-              //       where: { timeSlotId: slot.id },
+
+              // console.log(
+              //   'OldBookedSlots',
+              //   OldBookedSlots.map((d) => d.bookedDays)
+              // )
+
+              // const sendSmsForBooked = await Promise.all(
+              //   OldBookedSlots.map( (slot) => slot.bookedDays.map(async ({id, day, userId})=>{})
+              //     return await prisma.timeSlot.findMany({
+              //       where: { id: s.id },
+              //       include: {
+              //         bookedDays: true,
+              //       },
               //       // data: { availabilityId: null },
               //     })
               //   })
               // )
-              // console.log('OldBookedSlots', OldBookedSlots.flat())
+              OldBookedSlots.map((slot) =>
+                slot.bookedDays.map(async ({ day, userId }) => {
+                  const user = await getUserById(userId)
+                  // const doctor = await getDoctorById({ id: doctorId })
+                  // console.log('sms', user?.name, user?.phone, day)
+                  if (user?.name && user?.phone) {
+                    sendCancelBookingSms({
+                      values: { phone: user?.phone },
+                      name: user?.name,
+                      dayTime: day,
+                      doctorName: 'دکتر شیوا توتونیان',
+                    })
+                  }
+                })
+              )
 
-              // const oldSlotsExceptBooked = await Promise.all(
-              //   allOldSlots?.map(async (slot: any) => {
-              //     return await prisma.timeSlot.findMany({
-              //       where: {
-              //         id: slot.id,
-
-              //         NOT: {
-              //           bookedDays: {
-              //             some: { isBooked: true },
-              //           },
-              //         },
-              //       },
-              //     })
-              //   })
-              // )
               // console.log('oldSlotsExceptBooked', oldSlotsExceptBooked.flat())
               // console.log('allOldSlots.length', allOldSlots.length)
               // console.log(
@@ -359,11 +341,25 @@ export const createAvailability = async ({
             //   //   },
             //   // })
 
+            const disconnectedDoctorDays = await prisma.availability.update({
+              where: {
+                // availableDay: day,
+                // doctorId: +doctorId,
+                id: dayToDisconnect?.id,
+              },
+              data: {
+                // doctorId: null,
+              },
+              //   // include: {
+              //   //   times: { include: { bookedDays: true } },
+              //   // },
+            })
+
             // console.log('disconnectedDoctorDays ', disconnectedDoctorDays)
 
             const deletedAvailability = await prisma.availability.delete({
               where: {
-                id: disconnectedTimes?.id,
+                id: disconnectedDoctorDays?.id,
               },
             })
             // console.log('deletedAvailability', deletedAvailability)
@@ -536,8 +532,20 @@ export const createAvailability = async ({
         })
       )
     }
-  } catch (error) {
-    console.log(error)
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      return {
+        errors: {
+          _form: [err.message],
+        },
+      }
+    } else {
+      return {
+        errors: {
+          _form: ['مشکلی پیش آمده، لطفا دوباره امتحان کنید!'],
+        },
+      }
+    }
   }
   revalidatePath('/dashboard/booking')
   redirect('/dashboard/booking')
@@ -551,7 +559,16 @@ interface DisableDay {
 export async function disableSpecialDay({ date, doctorId, day }: DisableDay) {
   try {
     const user = await currentUser()
-    if (!user?.id || user.role !== 'ADMIN') redirect('/login')
+    if (!user?.id) {
+      redirect('/login')
+    }
+    if (user.role !== 'ADMIN') {
+      return {
+        errors: {
+          _form: ['شمااجازه دسترسی ندارید!'],
+        },
+      }
+    }
 
     const disabledDay = await prisma.specialDay.create({
       data: {
@@ -576,55 +593,85 @@ export async function disableSpecialDay({ date, doctorId, day }: DisableDay) {
 
     // if (availabilityDay?.times.map((time) => time.bookedDays.some))
     if (availabilityDay) {
-      const updatedToDisconnect = await Promise.all(
+      const findToDisconnect = await Promise.all(
         availabilityDay.times?.map(async (slot: any) => {
-          return await prisma.timeSlot.update({
+          return await prisma.timeSlot.findFirst({
             where: { id: slot.id },
-            data: { availabilityId: null },
+            include: {
+              bookedDays: true,
+            },
+            // data: { availabilityId: null },
           })
         })
       )
-      // const dayToCancel = await prisma.timeSlot.findFirst({
-      //   where: {
-      //     availabilityId: availabilityDay.id,
-      //   },
-      // })
-      // await prisma.timeSlot.update({
-      //   where: {
-      //     id: dayToCancel?.id,
-      //   },
-      //   data: {
-      //     availabilityId: null,
-      //   },
-      // })
-      // Loop through time slots
+      const timeSlotsThatShouldDisconnect = findToDisconnect
+        .flat()
+        .map((up) => up?.bookedDays)
+        .flat()
+
+      // console.log(
+      //   'timeSlotsThatShouldDisconnect',
+      //   timeSlotsThatShouldDisconnect
+      // )
+
+      if (timeSlotsThatShouldDisconnect.length > 0) {
+        const updatedToDisconnect = await Promise.all(
+          timeSlotsThatShouldDisconnect.map(async (slot: any) => {
+            return await prisma.timeSlot.update({
+              where: {
+                id: slot.timeSlotId,
+                availabilityId: availabilityDay.id,
+              },
+              data: { availabilityId: null },
+            })
+          })
+        )
+        // console.log('updatedToDisconnect', updatedToDisconnect)
+      }
       for (const time of availabilityDay.times) {
         // Loop through booked days for each time slot
         for (const bookedDay of time.bookedDays) {
           // Check if there's a user associated with the booking
           if (bookedDay.user) {
             // User exists!
-            console.log(
-              'User found:',
-              bookedDay.user.name && bookedDay.user.phone
-            )
+            // console.log('User found:', `${date} ساعت ${time.slot}`)
+            if (user.name && user.phone) {
+              await sendCancelBookingSms({
+                values: { phone: user.phone },
+                dayTime: `${date} ساعت ${time.slot}`,
+                doctorName: 'دکتر شیوا توتونیان',
+                name: user.name,
+              })
+            }
             // You can now access user data from bookedDay.user
             // return true
           }
         }
       }
+      const availability = await prisma.availability.update({
+        where: {
+          id: availabilityDay?.id,
+        },
+        data: {
+          disableDays: { connect: { id: disabledDay.id } },
+        },
+      })
+      // console.log('availability', availability)
     }
-    const availability = await prisma.availability.update({
-      where: {
-        id: availabilityDay?.id,
-      },
-      data: {
-        disableDays: { connect: { id: disabledDay.id } },
-      },
-    })
-    // console.log('Cancelled Day:', availabilityDay?.availableDay.length)
-  } catch (error) {
-    console.error('Error creating booking:', error)
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      return {
+        errors: {
+          _form: [err.message],
+        },
+      }
+    } else {
+      return {
+        errors: {
+          _form: ['مشکلی پیش آمده، لطفا دوباره امتحان کنید!'],
+        },
+      }
+    }
   }
   revalidatePath('/dashboard/booking')
   redirect('/dashboard/booking')

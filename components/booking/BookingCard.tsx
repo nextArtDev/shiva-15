@@ -1,20 +1,19 @@
 'use client'
 
+import { Button, buttonVariants } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import { cn, convertDaysToArray, getDayNameFromIndex } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CalendarIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns-jalali'
+import { faIR } from 'date-fns/locale'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { faIR } from 'date-fns/locale'
-import jalaali from 'jalaali-js'
-import { cn, convertDaysToArray, getDayNameFromIndex } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
 
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,24 +24,23 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { Availability, BookedDay, TimeSlot } from '@prisma/client'
-import { FC, useEffect, useState, useTransition } from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Availability, BookedDay, TimeSlot, User } from '@prisma/client'
+import { FC, useEffect, useState, useTransition } from 'react'
 
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { createBooking } from '@/lib/actions/booking/booking'
 import { bookingFormSchema } from '@/lib/schemas/booking'
-import { usePathname, useSearchParams } from 'next/navigation'
+import {
+  redirect,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation'
 import { toast } from 'sonner'
+import Link from 'next/link'
+import { compareTimeStrings, getCurrentTime } from '@/lib/utils'
+import { BorderBeam } from '../BorderBeam'
+import { isBefore, isSameDay, subDays } from 'date-fns'
 import { holidayDays } from '@/constants/holidays'
 interface BookingCardProps {
   availabilities:
@@ -50,23 +48,34 @@ interface BookingCardProps {
         times: (TimeSlot & { bookedDays: (BookedDay | null)[] })[] | null
       })[]
     | null
-
+  doctorId: string
   disabledDaysByDoctor?: string[][]
+  user: (User & { image: { url: string } | null }) | null
 }
 
 const BookingCard: FC<BookingCardProps> = ({
   availabilities,
-
+  doctorId,
   disabledDaysByDoctor,
+  user,
 }) => {
+  const [currentTimeToDisable, setCurrentTimeToDisable] = useState('')
+
   const [modal, setModal] = useState('')
-  // console.log(modal)
+  const schedule = availabilities?.map((availability) => {
+    return {
+      time: availability.times?.[0].slot,
+      day: availability.availableDay,
+    }
+  })
+
   const [showConfetti, setShowConfetti] = useState(false)
   const [selectedTime, setSelectedTime] = useState('')
   const [disabledDays, setDisabledDays] = useState<number[] | undefined>([])
   const path = usePathname()
   const searchParams = useSearchParams()
   const confetti = searchParams.get('confetti')
+  const router = useRouter()
   // console.log(searchParams.get('confetti'))
 
   const [isPending, startTransition] = useTransition()
@@ -87,6 +96,7 @@ const BookingCard: FC<BookingCardProps> = ({
     const disabledDayIndexes = convertDaysToArray(
       availabilities?.map((availability) => availability.availableDay)
     )
+
     // console.log(disabledDayIndexes)
     setDisabledDays(disabledDayIndexes)
   }, [availabilities])
@@ -94,22 +104,24 @@ const BookingCard: FC<BookingCardProps> = ({
   const form = useForm<z.infer<typeof bookingFormSchema>>({
     resolver: zodResolver(bookingFormSchema),
   })
-  // const handleSlotClick = async ({
-  //   timeId,
-  //   availabilityId,
-  // }: {
-  //   timeId: string
-  //   availabilityId: string
-  // }) => {
-  //   // await createBooking({ timeId, availabilityId, doctorId })
-  //   // setTimeSlots(timeSlots.filter((time) => !time.isSame(slot)))
-  //   // setRemovedSlots([...removedSlots, slot])
-  // }
+
   const handleTimeClick = (time: any) => {
     setSelectedTime(time === selectedTime ? null : time)
 
     // setDefaultResultOrder(time)
   }
+  useEffect(() => {
+    if (
+      new Date().getDay() === form?.getValues('dob')?.getDay() &&
+      format(form?.getValues('dob'), 'yyyy/MM/dd') ===
+        format(new Date(), 'yyyy/MM/dd')
+    ) {
+      const currentTime = getCurrentTime()
+      setCurrentTimeToDisable(currentTime)
+    }
+
+    return () => setCurrentTimeToDisable('')
+  }, [form?.getValues('dob'), modal, form])
 
   async function onSubmit(data: z.infer<typeof bookingFormSchema>) {
     // console.log(data)
@@ -123,7 +135,7 @@ const BookingCard: FC<BookingCardProps> = ({
           formData,
           selectedTime,
           format(data.dob, 'yyyy/MM/dd'),
-
+          doctorId,
           path
         )
           .then((res) => {
@@ -133,24 +145,17 @@ const BookingCard: FC<BookingCardProps> = ({
                 message: res?.errors.dob?.join(' و '),
               })
             } else if (res?.errors?._form) {
-              toast.error(res?.errors._form?.join(' و '))
               form.setError('root', {
                 type: 'custom',
                 message: res?.errors?._form?.join(' و '),
               })
+              toast.error(res?.errors._form?.join(' و '))
+            } else {
+              toast.success('نوبت شما رزرو شد')
             }
-            toast.success('نوبت شما رزرو شد')
           })
           .catch(() => console.log('مشکلی پیش آمده.'))
       })
-      // await createBooking({
-      //   time: selectedTime,
-      //   availabilityDay: data.dob.getDay().toString(),
-      //   doctorId,
-      //   day: format(data.dob, 'yyyy/MM/dd'),
-      // })
-      // console.log(format(data.dob, 'yyyy/MM/dd'))
-      // console.log(getDayNameFromIndex(data.dob.getDay()))
     } catch (error) {
       toast.error('مشکلی پیش آمده، لطفا دوباره امتحان کنید!')
     }
@@ -203,12 +208,16 @@ const BookingCard: FC<BookingCardProps> = ({
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
-                          onDayClick={(date: any) =>
+                          onDayClick={(date) =>
                             setModal(format(date, 'yyyy/MM/dd'))
                           }
-                          disabled={(date: any) =>
-                            date <= new Date() ||
-                            date < new Date('1900-01-01') ||
+                          disabled={(date) =>
+                            // disableToday({ date, nowDay: today }) ||
+                            // date < today ||
+                            // isDateDisabled(date) ||
+                            // date < new Date() ||
+                            isBefore(date, subDays(new Date(), 1)) ||
+                            date < new Date('2023-01-01') ||
                             !disabledDays?.includes(date.getDay()) ||
                             holidayDays.some(
                               (d) => d === format(date, 'yyyy/MM/dd')
@@ -232,28 +241,35 @@ const BookingCard: FC<BookingCardProps> = ({
               />
             </div>
           ) : (
-            selectedTime && (
-              <article className="bg-transparent border-none flex flex-col items-center justify-between font-semibold">
-                <Card>
-                  <CardContent className="gradient-base rounded-lg flex p-4 justify-between min-h-[180px] flex-col max-w-sm mx-auto  ">
-                    <p className="text-sm text-center text-primary-foreground pt-4 mx-auto w-4/5 ">
-                      {' '}
-                      {`شما برای روز ${format(
-                        form.getValues('dob'),
-                        'yyyy/MM/dd'
-                      )} ساعت ${selectedTime} نوبت رزرو  می‌کنید؟`}
-                    </p>
-                    <CardFooter>
-                      <Button
-                        disabled={isPending}
-                        className="w-full"
-                        type="submit"
-                      >
-                        تایید نوبت
-                      </Button>
-                    </CardFooter>
-                  </CardContent>
-                </Card>
+            selectedTime &&
+            !modal && (
+              <article className=" bg-transparent border-none flex flex-col items-center justify-between font-semibold">
+                <div className="gradient-base rounded-lg flex p-4 justify-between min-h-[180px] flex-col max-w-sm mx-auto  ">
+                  <p className="text-sm text-center text-primary-foreground pt-4 mx-auto w-4/5 ">
+                    {' '}
+                    {`شما برای روز ${format(
+                      form.getValues('dob'),
+                      'yyyy/MM/dd'
+                    )} ساعت ${selectedTime} نوبت رزرو  می‌کنید؟`}
+                  </p>
+
+                  <Button
+                    disabled={isPending}
+                    className=" w-full"
+                    type="submit"
+                  >
+                    تایید نوبت
+                  </Button>
+                  <Button
+                    type="reset"
+                    variant={'ghost'}
+                    disabled={isPending}
+                    className="border w-full"
+                    onClick={() => router.back()}
+                  >
+                    انصراف
+                  </Button>
+                </div>
               </article>
             )
           )}
@@ -289,22 +305,24 @@ const BookingCard: FC<BookingCardProps> = ({
                               selectedTime === time.slot ? 'default' : 'outline'
                             }
                             disabled={
-                              time.bookedDays.some(
+                              (currentTimeToDisable &&
+                                compareTimeStrings(
+                                  currentTimeToDisable,
+                                  time.slot
+                                )) ||
+                              (time.bookedDays.some(
                                 (bookDay) => bookDay?.timeSlotId === time.id
                               ) &&
-                              time.bookedDays?.some(
-                                (bookedDay) =>
-                                  bookedDay?.day ===
-                                  format(form.getValues('dob'), 'yyyy/MM/dd')
-                              )
+                                time.bookedDays?.some(
+                                  (bookedDay) =>
+                                    bookedDay?.day ===
+                                    format(form.getValues('dob'), 'yyyy/MM/dd')
+                                ))
                             }
                             onClick={() => {
                               handleTimeClick(time.slot)
-
-                              // Handle button click here
-                              // console.log(time.slot)
                             }}
-                            className="text-sm max-w-16 "
+                            className={cn('text-sm max-w-16 ')}
                           >
                             {time.slot}
                           </Button>
@@ -315,14 +333,28 @@ const BookingCard: FC<BookingCardProps> = ({
                   return null // Return null if the day doesn't match
                 })}
               </ScrollArea>
+              {/* {!!user ? ( */}
               <Button
                 className="w-full mt-8  "
                 // type="submit"
                 onClick={() => setModal('')}
                 disabled={!selectedTime || isPending}
               >
-                تایید روز
+                {!!user?.id ? (
+                  'تایید روز و ساعت'
+                ) : (
+                  <Link href={'/login'}>ورود/عضویت</Link>
+                )}
               </Button>
+              {/* // ) : (
+              //   <Link
+              //     onClick={() => setModal('')}
+              //     className={cn(buttonVariants({ variant: 'destructive' }))}
+              //     href={'/login'}
+              //   >
+              //     ورود/عضویت
+              //   </Link>
+              // )} */}
             </DialogContent>
           </Dialog>
         </form>

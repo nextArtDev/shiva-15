@@ -147,3 +147,17 @@ export function formatTimeToNow(date: Date): string {
     },
   })
 }
+
+export const getCurrentTime = (): string => {
+  const now = new Date()
+  const hours: string = String(now.getHours()).padStart(2, '0')
+  const minutes: string = String(now.getMinutes()).padStart(2, '0')
+  return `${hours}:${minutes}`
+}
+
+export const compareTimeStrings = (time1: string, time2: string) => {
+  const [hour1, minute1] = time1.split(':').map(Number)
+  const [hour2, minute2] = time2.split(':').map(Number)
+
+  return hour1 > hour2 || (hour1 === hour2 && minute1 > minute2)
+}

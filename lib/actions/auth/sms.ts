@@ -18,10 +18,6 @@ export const sendSms = async (values: z.infer<typeof PhoneSchema>) => {
 
   const { phone } = validatedFields.data
 
-  // const client = new TrezSMSClient(
-  //   process.env.SMS_USERNAME!,
-  //   process.env.SMS_PASSWORD!
-  // )
   const api = new MelipayamakApi({
     username: process.env.SMS_USERNAME!,
     password: process.env.SMS_PASSWORD!,
@@ -30,19 +26,14 @@ export const sendSms = async (values: z.infer<typeof PhoneSchema>) => {
   try {
     // console.log({ phone, verificationCode })
     await api.send({
-      from: process.env.SMS_SENDER!,
+      from: '50002710056401',
       to: phone,
       text: `کد تایید شما: ${
         verificationCode as number
-      } \n مدت اعتبار این کد ۲ دقیقه می‌باشد`,
+      } \n مدت اعتبار این کد ۲ دقیقه می‌باشد
+       \n https://shafagh.iran.liara.run`,
     })
 
-    // if (messageId <= 2000) {
-    //   return {
-    //     error: 'ارسال کد تایید با خطا مواجه شد لطفا دوباره تلاش نمایید',
-    //     // verificationCode: null,
-    //   }
-    // }
     return { success: 'کد تایید به شماره شما ارسال شد.', verificationCode }
   } catch (error) {
     console.log(error)
@@ -99,6 +90,80 @@ export const verifySms = async (values: VerifySmsType) => {
       },
     })
     return { success: 'حساب کاربری شما با موفقیت فعال شد.' }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+interface SendBookingSms {
+  values: z.infer<typeof PhoneSchema>
+  dayTime: string
+  doctorName: string
+  name: string
+}
+
+export const sendBookingSms = async ({
+  values,
+  dayTime,
+  doctorName,
+  name,
+}: SendBookingSms) => {
+  const validatedFields = PhoneSchema.safeParse(values)
+
+  if (!validatedFields.success) {
+    return { error: 'شماره نامعتبر است.' }
+  }
+
+  const { phone } = validatedFields.data
+
+  const api = new MelipayamakApi({
+    username: process.env.SMS_USERNAME!,
+    password: process.env.SMS_PASSWORD!,
+  })
+
+  try {
+    await api.send({
+      from: '50002710056401',
+      to: phone,
+      text: `${name}\n نوبت ${dayTime} شما  \n با دکتر ${doctorName} رزرو شد.
+      \n https://shafagh.iran.liara.run`,
+    })
+
+    return { success: 'پیام رزرو ارسال شد.' }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const sendCancelBookingSms = async ({
+  values,
+  dayTime,
+  doctorName,
+  name,
+}: SendBookingSms) => {
+  const validatedFields = PhoneSchema.safeParse(values)
+
+  if (!validatedFields.success) {
+    return { error: 'شماره نامعتبر است.' }
+  }
+
+  const { phone } = validatedFields.data
+
+  try {
+    const api = new MelipayamakApi({
+      username: process.env.SMS_USERNAME!,
+      password: process.env.SMS_PASSWORD!,
+    })
+    // const asm = await api.send({
+    await api.send({
+      from: '50002710056401',
+      to: phone,
+      text: `${name}\nنوبت ${dayTime} شما  \n با دکتر ${doctorName} کنسل شده است.
+      \n https://shafagh.iran.liara.run`,
+      // text: `${name}\nنوبت ${dayTime} شما  \n با دکتر ${doctorName} کنسل شده است. \n کلینیک آیین شفق`,
+    })
+    // console.log(asm)
+    return { success: 'پیام کنسلی ارسال شد.' }
   } catch (error) {
     console.log(error)
   }

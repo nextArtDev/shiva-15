@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 // import { DayPicker } from 'react-day-picker-jalali'
-import { DayPicker } from 'react-day-picker/jalali'
+import { DayPicker } from 'react-day-picker/dist/esm/jalali'
 import 'react-day-picker/dist/style.module.css'
 // import 'react-day-picker/lib/style.css'
 import { cn } from '@/lib/utils'

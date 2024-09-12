@@ -9,6 +9,9 @@ import {
 import { getDayNameFromIndex } from '@/lib/utils'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { sendBookingSms } from '../auth/sms'
+import { PhoneSchema } from '@/lib/schemas/auth'
+import { z } from 'zod'
 
 interface CreateBookingFormState {
   // success?: string
@@ -38,7 +41,7 @@ export async function createBooking(
   formData: FormData,
   time: string,
   day: string,
-
+  doctorId: string,
   path: string
 ): Promise<CreateBookingFormState> {
   const result = createBookingFormSchema.safeParse({
@@ -54,7 +57,29 @@ export async function createBooking(
   // console.log('res', result.data)
   try {
     const user = await currentUser()
-    if (!user?.id) redirect('/login')
+    // console.log(!user?.id)
+    if (!user?.id)
+      return {
+        errors: {
+          _form: ['شمااجازه دسترسی ندارید، به حساب کاربری خود وارد شوید.!'],
+        },
+      }
+
+    // if (!user) {
+    //   return {
+    //     errors: {
+    //       _form: ['شمااجازه دسترسی ندارید!'],
+    //     },
+    //   }
+    // }
+    // if (user.role !== 'ADMIN') {
+    //   return {
+    //     errors: {
+    //       _form: ['شمااجازه دسترسی ندارید!'],
+    //     },
+    //   }
+    // }
+
     const availability = await prisma.availability.findFirst({
       where: {
         availableDay: getDayNameFromIndex(+result.data.dob),
@@ -78,7 +103,7 @@ export async function createBooking(
     if (isBookedBefore)
       return {
         errors: {
-          _form: ['این نوبت قبلا گرفته شده است!'],
+          _form: ['این نوبت قبلا رزرو شده است!'],
         },
       }
     const bookedDayUpdate = await prisma.bookedDay.create({
@@ -91,8 +116,16 @@ export async function createBooking(
         userId: user.id,
       },
     })
+    if (user.name && user.phone) {
+      const sms = await sendBookingSms({
+        values: { phone: user.phone },
+        dayTime: `${day} ساعت ${time}`,
+        doctorName: 'دکتر شیوا توتونیان',
+        name: user.name,
+      })
+      // console.log('OK', sms)
+    }
     // console.log(bookedDayUpdate)
-    // console.log('OK')
     // revalidatePath(path)
   } catch (err: unknown) {
     if (err instanceof Error) {
@@ -111,6 +144,6 @@ export async function createBooking(
   }
 
   revalidatePath(path)
-  // redirect(`/doctors/${doctorId}?confetti=true`)
-  redirect(`/`)
+
+  redirect(`/user`)
 }
