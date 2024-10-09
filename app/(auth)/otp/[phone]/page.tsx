@@ -4,7 +4,7 @@ import React, { startTransition, useState, useTransition } from 'react'
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 import OtpInput from '../../../../components/auth/otp-input'
 
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { FormError } from '@/components/auth/form-error'
 import { FormSuccess } from '@/components/auth/form-success'
 
@@ -18,6 +18,9 @@ type FormData = {
 
 export default function OtpForm({ params }: { params: { phone: string } }) {
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const pass = searchParams.get('pass')
 
   const [error, setError] = useState<string | undefined>('')
   const [success, setSuccess] = useState<string | undefined>('')
@@ -27,28 +30,29 @@ export default function OtpForm({ params }: { params: { phone: string } }) {
       otp: '',
     },
   })
+  if (!params.phone || !pass) return
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setError('')
     setSuccess('')
 
     startTransition(() => {
-      activation({ phone: params.phone, verificationCode: data.otp }).then(
-        (res) => {
-          setError(res?.error)
-          setSuccess(res?.success)
-          if (res?.success) {
-            toast.success(
-              'ثبت نام شما با موفقیت انجام شد، لطفا وارد حساب کاربری خود شوید.'
-            )
-            router.push('/login')
-          }
-          if (res?.error) {
-            // router.push('/register')
-            reset()
-          }
+      activation({
+        phone: params.phone,
+        verificationCode: data.otp,
+        password: pass,
+      }).then((res) => {
+        setError(res?.error)
+        setSuccess(res?.success)
+        if (res?.success) {
+          toast.success('ثبت نام شما با موفقیت انجام شد.')
+          router.push('/')
         }
-      )
+        if (res?.error) {
+          // router.push('/register')
+          reset()
+        }
+      })
     })
 
     // console.log(data) // Handle form submission

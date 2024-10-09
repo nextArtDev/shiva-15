@@ -76,6 +76,6 @@ export async function createReview(
       }
     }
   }
-  revalidatePath(path)
-  redirect(path)
+  revalidatePath('/')
+  redirect('/')
 }

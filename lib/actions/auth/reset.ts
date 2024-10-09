@@ -3,7 +3,7 @@
 import * as z from 'zod'
 
 import { sendSms, verifySms } from './sms'
-import bcrypt from 'bcryptjs'
+// import bcrypt from 'bcryptjs'
 
 import { prisma } from '@/lib/prisma'
 import { auth, signIn } from '@/auth'
@@ -88,7 +88,7 @@ export const resetPass = async ({ values, phone }: ResetPassProps) => {
     if (!user) {
       return { error: 'شما هنوز ثبت نام نکرده‌اید.' }
     }
-    const hashedPassword = await bcrypt.hash(password, 10)
+    // const hashedPassword = await bcrypt.hash(password, 10)
 
     //   const existingUser = await getUserByPhoneNumber(phone)
 
@@ -99,7 +99,7 @@ export const resetPass = async ({ values, phone }: ResetPassProps) => {
     await prisma.user.update({
       where: { phone },
       data: {
-        password: hashedPassword,
+        password,
       },
     })
     await signIn('credentials', {

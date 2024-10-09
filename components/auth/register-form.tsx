@@ -60,7 +60,7 @@ export const RegisterForm = () => {
           setError(data.error)
           setSuccess(data.success)
           if (data.success) {
-            router.push(`/otp/${values.phone}`)
+            router.push(`/otp/${values.phone}/?pass=${values.password}`)
           }
         })
         .catch((error) => console.log(error))
@@ -124,7 +124,7 @@ export const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>رمز عبور</FormLabel>
+                  <FormLabel>رمز عبور (کد ملی)</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input

@@ -208,10 +208,10 @@ const BookingCard: FC<BookingCardProps> = ({
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
-                          onDayClick={(date) =>
+                          onDayClick={(date: Date) =>
                             setModal(format(date, 'yyyy/MM/dd'))
                           }
-                          disabled={(date) =>
+                          disabled={(date: Date) =>
                             // disableToday({ date, nowDay: today }) ||
                             // date < today ||
                             // isDateDisabled(date) ||

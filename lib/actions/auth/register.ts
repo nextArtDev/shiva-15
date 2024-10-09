@@ -3,7 +3,7 @@
 import * as z from 'zod'
 import { signIn } from '@/auth'
 import { sendSms, verifySms } from './sms'
-import bcrypt from 'bcryptjs'
+// import bcrypt from 'bcryptjs'
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
 
 import { prisma } from '@/lib/prisma'
@@ -42,7 +42,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
 
   // console.log(smsCode?.success, smsCode?.verificationCode)
 
-  const hashedPassword = await bcrypt.hash(password, 10)
+  // const hashedPassword = await bcrypt.hash(password, 10)
 
   const existingUser = await getUserByPhoneNumber(phone)
 
@@ -54,7 +54,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     data: {
       name,
       phone,
-      password: hashedPassword,
+      password,
       verificationCode: smsCode.verificationCode,
       verificationDate: new Date(),
     },
@@ -67,15 +67,16 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   //   verificationToken.token,
   // );
 
-  return { success: 'کد تایید به شماره شما ارسال شد.', phone }
+  return { success: 'کد تایید به شماره شما ارسال شد.', phone, password }
 }
 
 export const activation = async (values: {
   phone: string
   verificationCode: string
+  password: string
   callbackUrl?: string | null
 }) => {
-  const { phone, verificationCode, callbackUrl } = values
+  const { phone, verificationCode, callbackUrl, password } = values
 
   const user = await getUserByPhoneNumber(phone)
 
@@ -88,11 +89,12 @@ export const activation = async (values: {
   if (smsVerification?.error) {
     return { error: smsVerification.error }
   }
-  // const res = await signIn('Credentials', {
-  //   phone,
-  //   password: user.password,
-  //   redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
-  // })
+  await signIn('credentials', {
+    phone,
+    password,
+    redirectTo: '/',
+    // redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+  })
 
   // console.log({ res })
 
