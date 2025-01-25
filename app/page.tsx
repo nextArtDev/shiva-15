@@ -15,6 +15,8 @@ import Footer from '@/components/footer/Footer'
 import { prisma } from '@/lib/prisma'
 import { currentUser } from '@/lib/auth'
 import { getAllAvailabilities } from '@/lib/queries/booking'
+import { Suspense } from 'react'
+import StarsCanvas from '@/components/StarBackground'
 
 export default async function Home() {
   const reviews = await prisma.review.findMany({
@@ -26,6 +28,7 @@ export default async function Home() {
       },
     },
   })
+
   const user = await currentUser()
 
   const beforeRated = await prisma.review.findFirst({
@@ -66,6 +69,11 @@ export default async function Home() {
         <Contact />
         {!!reviews && <Comments reviews={reviews} />}
         {/* <FeaturedIn /> */}
+        <div className="-z-10">
+          <Suspense fallback="null">
+            <StarsCanvas />
+          </Suspense>
+        </div>
         <Footer user={user} />
       </main>
     </>
