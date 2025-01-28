@@ -1,10 +1,11 @@
-import { auth, signOut } from '@/auth'
+import { signOut } from '@/auth'
+import { currentUser } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 
 type Props = {}
 
 async function page({}: Props) {
-  const session = await auth()
+  const session = await currentUser()
   return (
     <div>
       <form

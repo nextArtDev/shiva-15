@@ -1,11 +1,10 @@
 'use server'
 
-import { auth } from '@/auth'
-
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import { createReviewActionSchema } from '@/lib/schemas/rating'
+import { currentUser } from '../auth'
 
 interface CreateReviewFormState {
   errors: {
@@ -30,8 +29,8 @@ export async function createReview(
       errors: result.error.flatten().fieldErrors,
     }
   }
-  const session = await auth()
-  if (!session || !session.user) {
+  const session = await currentUser()
+  if (!session || !session.id) {
     redirect('/login')
     // return {
     //   errors: {
@@ -58,7 +57,7 @@ export async function createReview(
       data: {
         comment: result.data.comment,
         rating: +result.data.rating,
-        userId: session.user.id,
+        userId: session.id,
       },
     })
   } catch (err: unknown) {
