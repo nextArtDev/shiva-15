@@ -1,11 +1,6 @@
 'use client'
 
-import React, {
-  startTransition,
-  useEffect,
-  useState,
-  useTransition,
-} from 'react'
+import React, { startTransition, useEffect, useState, useTransition, use } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
 import { redirect, useParams, useRouter } from 'next/navigation'
@@ -22,7 +17,8 @@ type FormData = {
   otp: string
 }
 
-export default function OtpForm({ params }: { params: { phone: string } }) {
+export default function OtpForm(props: { params: Promise<{ phone: string }> }) {
+  const params = use(props.params);
   const router = useRouter()
   // console.log(params.phone)
   const [sentSms, setSentSms] = useState(false)
