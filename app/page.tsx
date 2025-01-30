@@ -19,7 +19,7 @@ import { Suspense } from 'react'
 import StarsCanvas from '@/components/StarBackground'
 import ThreeDPhotoCarouselModify from '@/components/3d-carousel/modify'
 import ThreeDPhotoCarousel from '@/components/3d-carousel'
-import ThreeDPhotoCarouselModify2 from '@/components/3d-carousel/mdify-2'
+import ThreeDPhotoCarouselModify2 from '@/components/3d-carousel/modify-4'
 
 export default async function Home() {
   const reviews = await prisma.review.findMany({

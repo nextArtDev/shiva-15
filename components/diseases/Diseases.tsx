@@ -6,7 +6,7 @@ import Ilness from './Ilness'
 import Card from '../Card'
 import { BackgroundBeamsWithCollision } from '../BackgroundBeamsWithCollision'
 
-const diseases = [
+export const diseases = [
   {
     id: 1,
     title: 'مراقبت‌های پیش از بارداری',
