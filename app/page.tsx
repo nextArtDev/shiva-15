@@ -4,7 +4,7 @@ import FeaturedIn from '@/components/FeaturedIn'
 import Gallery from '@/components/Gallery'
 
 import Card from '@/components/Card'
-import Diseases from '@/components/diseases/Diseases'
+import Diseases, { diseases } from '@/components/diseases/Diseases'
 import Contact from '@/components/Contact'
 import Comments from '@/components/Comments'
 import { LogoTicker } from '@/components/logo-tricker/LogoTicker'
@@ -19,7 +19,7 @@ import { Suspense } from 'react'
 import StarsCanvas from '@/components/StarBackground'
 import ThreeDPhotoCarouselModify from '@/components/3d-carousel/modify'
 import ThreeDPhotoCarousel from '@/components/3d-carousel'
-import ThreeDPhotoCarouselModify2 from '@/components/3d-carousel/modify-4'
+import ThreeDPhotoCarouselModify2 from '@/components/3d-carousel/modify-5'
 
 export default async function Home() {
   const reviews = await prisma.review.findMany({
@@ -72,10 +72,12 @@ export default async function Home() {
           orientation="left"
         />
         <ThreeDPhotoCarouselModify2
+          cards={diseases}
           scrollDirection="horizontal"
           orientation="left"
         />
         <ThreeDPhotoCarouselModify2
+          cards={diseases}
           scrollDirection="horizontal"
           orientation="right"
         />

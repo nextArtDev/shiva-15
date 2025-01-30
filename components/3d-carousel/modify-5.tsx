@@ -10,13 +10,11 @@ import {
 import {
   AnimatePresence,
   motion,
-  useAnimation,
   useMotionValue,
   useTransform,
   useScroll,
   useSpring,
 } from 'framer-motion'
-import { diseases } from '../diseases/Diseases'
 
 export const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -78,26 +76,36 @@ type Orientation = 'left' | 'right'
 const Carousel = memo(
   ({
     handleClick,
-    diseases,
+    cards,
     isCarouselActive,
     scrollDirection = 'horizontal',
     orientation = 'right',
     rotation,
+    dragOffset,
   }: {
     handleClick: (cardId: number, index: number) => void
-    diseases: Array<{ id: number; title: string; description: string }>
+    cards: Array<{ id: number; title: string; description: string }>
     isCarouselActive: boolean
     scrollDirection: ScrollDirection
     orientation: Orientation
     rotation: any
+    dragOffset: any
   }) => {
     const isScreenSizeSm = useMediaQuery('(max-width: 640px)')
     const cylinderWidth = isScreenSizeSm ? 1100 : 1800
-    const faceCount = diseases.length
+    const faceCount = cards.length
     const faceWidth = cylinderWidth / faceCount
     const radius = cylinderWidth / (2 * Math.PI)
-
     const orientationMultiplier = orientation === 'right' ? 1 : -1
+
+    const handleDrag = useCallback(
+      (_, info: any) => {
+        const deltaRotation =
+          (info.delta.x / cylinderWidth) * 360 * orientationMultiplier
+        dragOffset.set(dragOffset.get() + deltaRotation)
+      },
+      [cylinderWidth, dragOffset, orientationMultiplier]
+    )
 
     return (
       <div
@@ -114,9 +122,17 @@ const Carousel = memo(
             rotateY: rotation,
             width: cylinderWidth,
             transformStyle: 'preserve-3d',
+            cursor: 'grab',
           }}
+          drag="x"
+          onDrag={handleDrag}
+          whileDrag={{ cursor: 'grabbing' }}
+          dragElastic={0.1}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragMomentum={false}
+          dragPropagation={true}
         >
-          {diseases.map((card, i) => (
+          {cards.map((card, i) => (
             <motion.div
               key={`key-${card.id}`}
               className="absolute flex h-full origin-center items-center justify-center rounded-xl bg-mauve-dark-2 p-2"
@@ -130,13 +146,13 @@ const Carousel = memo(
             >
               <motion.div
                 layoutId={`card-${card.id}`}
-                className="pointer-events-none w-full h-full rounded-xl bg-white/20 p-4 flex flex-col justify-center"
+                className="pointer-events-none w-[150px] h-fit rounded-xl bg-black/60 backdrop-blur-2xl border  p-4 flex flex-col justify-center"
                 initial={{ filter: 'blur(4px)' }}
                 layout="position"
                 animate={{ filter: 'blur(0px)' }}
                 transition={transition}
               >
-                <h3 className="text-lg font-bold text-center mb-2">
+                <h3 className="text-sm text-white font-bold text-center mb-2">
                   {card.title}
                 </h3>
                 {/* <p className="text-sm text-center">{card.description}</p> */}
@@ -152,10 +168,11 @@ const Carousel = memo(
 export default function ThreeDPhotoCarouselModify2({
   scrollDirection = 'horizontal',
   orientation = 'right',
+  cards,
 }: {
   scrollDirection?: ScrollDirection
   orientation?: Orientation
-  //   diseases: Array<{ id: number; title: string; description: string }>
+  cards: Array<{ id: number; title: string; description: string }>
 }) {
   const [activeCardId, setActiveCardId] = useState<number | null>(null)
   const [isCarouselActive, setIsCarouselActive] = useState(true)
@@ -171,10 +188,14 @@ export default function ThreeDPhotoCarouselModify2({
     damping: 20,
   })
 
-  const rotation = useTransform(
+  const scrollRotation = useTransform(
     smoothProgress,
     [0, 1],
     [0, orientation === 'right' ? 360 : -360]
+  )
+  const dragOffset = useMotionValue(0)
+  const totalRotation = useTransform(
+    () => scrollRotation.get() + dragOffset.get()
   )
 
   const handleClick = useCallback((cardId: number) => {
@@ -189,11 +210,11 @@ export default function ThreeDPhotoCarouselModify2({
 
   useEffect(() => {
     if (!isCarouselActive) {
-      rotation.set(rotation.get())
+      totalRotation.set(totalRotation.get())
     }
-  }, [isCarouselActive, rotation])
+  }, [isCarouselActive, totalRotation])
 
-  const selectedCard = diseases.find((card) => card.id === activeCardId)
+  const selectedCard = cards.find((card) => card.id === activeCardId)
 
   return (
     <motion.div layout className="relative" ref={containerRef}>
@@ -232,14 +253,15 @@ export default function ThreeDPhotoCarouselModify2({
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="relative h-[300px] w-full overflow-hidden">
+      <div className="relative h-[200px] w-full overflow-hidden">
         <Carousel
           handleClick={handleClick}
-          diseases={diseases}
+          cards={cards}
           isCarouselActive={isCarouselActive}
           scrollDirection={scrollDirection}
           orientation={orientation}
-          rotation={rotation}
+          rotation={totalRotation}
+          dragOffset={dragOffset}
         />
       </div>
     </motion.div>
