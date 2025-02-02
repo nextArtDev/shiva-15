@@ -28,13 +28,7 @@ const Card: FC<CardProps> = ({ title, content, color }) => {
         <p className="p-4 "> {content}</p>
       </div>
       {/* <div className="card !bg-transparent blur-3xl centerIlness"> */}
-      <div className="card centerIlness">
-        {/* <span className={`border1`}></span>
-        <span className={`border2`}></span>
-        <span className={`border3`}></span>
-        <span className={`border4`}></span> */}
-        {/* <div className="absolute inset-0 blur-3xl" /> */}
-      </div>
+      <div className="card centerIlness"></div>
     </Tilt>
   )
 }

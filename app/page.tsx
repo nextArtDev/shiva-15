@@ -67,10 +67,7 @@ export default async function Home() {
         {/* <BentoDemo /> */}
         {/* <Booking /> */}
         <Diseases />
-        <ThreeDPhotoCarouselModify
-          scrollDirection="horizontal"
-          orientation="left"
-        />
+
         <ThreeDPhotoCarouselModify2
           cards={diseases}
           scrollDirection="horizontal"
@@ -81,7 +78,7 @@ export default async function Home() {
           scrollDirection="horizontal"
           orientation="right"
         />
-        <ThreeDPhotoCarousel />
+        {/* <ThreeDPhotoCarousel /> */}
         <Gallery />
         <Contact />
         {!!reviews && <Comments reviews={reviews} />}

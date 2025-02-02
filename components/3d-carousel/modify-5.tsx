@@ -15,6 +15,8 @@ import {
   useScroll,
   useSpring,
 } from 'framer-motion'
+import { BorderBeam } from '../BorderBeam'
+import Tilt from 'react-parallax-tilt'
 
 export const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -92,8 +94,8 @@ const Carousel = memo(
     dragOffset: any
   }) => {
     const isScreenSizeSm = useMediaQuery('(max-width: 640px)')
-    const cylinderWidth = isScreenSizeSm ? 1100 : 1800
-    const faceCount = cards.length
+    const cylinderWidth = isScreenSizeSm ? 800 : 1800
+    const faceCount = cards.length * 2
     const faceWidth = cylinderWidth / faceCount
     const radius = cylinderWidth / (2 * Math.PI)
     const orientationMultiplier = orientation === 'right' ? 1 : -1
@@ -109,7 +111,7 @@ const Carousel = memo(
 
     return (
       <div
-        className="flex h-full items-center justify-center bg-mauve-dark-2 carousel-container"
+        className="flex h-full  items-center justify-center bg-mauve-dark-2 carousel-container"
         style={{
           perspective: '1000px',
           transformStyle: 'preserve-3d',
@@ -117,7 +119,7 @@ const Carousel = memo(
         }}
       >
         <motion.div
-          className="relative flex h-full origin-center justify-center"
+          className="relative flex h-full  origin-center justify-center"
           style={{
             rotateY: rotation,
             width: cylinderWidth,
@@ -135,7 +137,7 @@ const Carousel = memo(
           {cards.map((card, i) => (
             <motion.div
               key={`key-${card.id}`}
-              className="absolute flex h-full origin-center items-center justify-center rounded-xl bg-mauve-dark-2 p-2"
+              className="absolute  flex  !aspect-square origin-center items-center justify-center rounded-xl bg-mauve-dark-2 p-2"
               style={{
                 width: `${faceWidth}px`,
                 transform: `rotateY(${
@@ -146,16 +148,33 @@ const Carousel = memo(
             >
               <motion.div
                 layoutId={`card-${card.id}`}
-                className="pointer-events-none w-[150px] h-fit rounded-xl bg-black/60 backdrop-blur-2xl border  p-4 flex flex-col justify-center"
+                className="pointer-events-none  bg-white/30 backdrop-blur-3xl  rounded-xl  border   flex flex-col justify-center"
                 initial={{ filter: 'blur(4px)' }}
                 layout="position"
                 animate={{ filter: 'blur(0px)' }}
                 transition={transition}
               >
-                <h3 className="text-sm text-white font-bold text-center mb-2">
-                  {card.title}
-                </h3>
-                {/* <p className="text-sm text-center">{card.description}</p> */}
+                {/* #c04dff */}
+                <Tilt
+                  glareEnable
+                  tiltMaxAngleX={5}
+                  tiltMaxAngleY={5}
+                  tiltReverse
+                  className=" glass-card  m-2"
+                >
+                  {/* #c04dff */}
+                  <div className={`elements bg !bg-[#c04dff] !w-5 !h-5 `}></div>
+                  <div className=" !px-4 flex justify-center items-center ">
+                    <p
+                      className={`text-[#4e335c] font-semibold text-center text-base `}
+                    >
+                      {card.title}
+                    </p>
+                  </div>
+
+                  {/* <div className="card !bg-transparent blur-3xl centerIlness"> */}
+                  {/* <div className=" centerIlness"></div> */}
+                </Tilt>
               </motion.div>
             </motion.div>
           ))}
@@ -253,7 +272,7 @@ export default function ThreeDPhotoCarouselModify2({
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="relative h-[200px] w-full overflow-hidden">
+      <div className="relative h-[250px] w-full overflow-hidden">
         <Carousel
           handleClick={handleClick}
           cards={cards}
