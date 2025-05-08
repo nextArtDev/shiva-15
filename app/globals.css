@@ -558,8 +558,8 @@ body {
 .glass-card .card {
   position: relative;
   background: rgba(255, 255, 255, 0.08);
-  width: 300px;
-  min-height: 500px;
+  width: 100%;
+  min-height: 400px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.56);
   border-top: 1px solid rgba(255, 255, 255, 0.75);
@@ -575,7 +575,7 @@ body {
   width: 100px;
   height: 50px;
   background: rgba(255, 255, 255, 0.1);
-  transform: translateZ(80px);
+  transform: translateZ(50px);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.56);
   border-top: 1px solid rgba(255, 255, 255, 0.75);
@@ -587,11 +587,11 @@ body {
   width: 130px;
   height: 130px;
   border: none;
-  top: 60%;
-  left: 10%;
+  top: 85%;
+  left: 20%;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
-  transform: translateZ(70px);
+  transform: translateZ(20px);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.56);
   box-shadow: 0 25px 45px rgba(0, 0, 0, 0.05);
@@ -610,7 +610,7 @@ body {
   min-height: 50px;
   width: auto;
   padding: 4px;
-  transform: translateZ(130px);
+  transform: translateZ(60px);
   backdrop-filter: blur(10px);
 }
 
@@ -620,9 +620,9 @@ body {
   /* bottom: 0; */
   right: 5px;
   width: 75%;
-  min-height: 65%;
+  min-height: 75%;
   padding: 5px;
-  transform: translateZ(90px);
+  transform: translateZ(30px);
   text-align: center;
   display: flex;
   justify-content: center;
@@ -701,7 +701,7 @@ body {
   /* width: 100px;
   height: 50px; */
   background: rgba(255, 255, 255, 0.1);
-  transform: translateZ(80px);
+  transform: translateZ(50px);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.56);
   border-top: 1px solid rgba(255, 255, 255, 0.75);
@@ -729,7 +729,7 @@ body {
   top: 35%;
   right: 35%;
   /* border-radius: 20%; */
-  transform: translateZ(100px);
+  transform: translateZ(40px);
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.56);
@@ -737,7 +737,7 @@ body {
 }
 .contact-elements.contact-button:hover,
 .contact-elements.contact-button:active {
-  transform: translateZ(80px);
+  transform: translateZ(350px);
   backdrop-filter: blur(40px);
 }
 .contact-elements.contact-imgBx {
@@ -756,7 +756,7 @@ body {
   right: 50px;
   width: 300px;
   min-height: 85%;
-  transform: translateZ(160px);
+  transform: translateZ(50px);
   text-align: center;
   display: flex;
   justify-content: center;

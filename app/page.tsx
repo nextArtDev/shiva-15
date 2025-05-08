@@ -4,7 +4,11 @@ import FeaturedIn from '@/components/FeaturedIn'
 import Gallery from '@/components/Gallery'
 
 import Card from '@/components/Card'
-import Diseases, { diseases } from '@/components/diseases/Diseases'
+import Diseases, {
+  diseases,
+  publicBeuties,
+  womanBeuties,
+} from '@/components/diseases/Diseases'
 import Contact from '@/components/Contact'
 import Comments from '@/components/Comments'
 import { LogoTicker } from '@/components/logo-tricker/LogoTicker'
@@ -20,6 +24,7 @@ import StarsCanvas from '@/components/StarBackground'
 import ThreeDPhotoCarouselModify from '@/components/3d-carousel/modify'
 import ThreeDPhotoCarousel from '@/components/3d-carousel'
 import ThreeDPhotoCarouselModify2 from '@/components/3d-carousel/modify-5'
+import CubeEffect from '@/components/cube/CubeEffect'
 
 export default async function Home() {
   const reviews = await prisma.review.findMany({
@@ -64,10 +69,18 @@ export default async function Home() {
           availabilities={availabilities}
           disabledDaysByDoctor={disabledDaysByDoctor}
         />
+        <div className="">
+          <CubeEffect items={diseases} />
+        </div>
+        <div className="">
+          <CubeEffect items={publicBeuties} />
+        </div>
+        <div className="">
+          <CubeEffect items={womanBeuties} />
+        </div>
         {/* <BentoDemo /> */}
         {/* <Booking /> */}
         <Diseases />
-
         <ThreeDPhotoCarouselModify2
           cards={diseases}
           scrollDirection="horizontal"
@@ -78,7 +91,7 @@ export default async function Home() {
           scrollDirection="horizontal"
           orientation="right"
         />
-        {/* <ThreeDPhotoCarousel /> */}
+        <ThreeDPhotoCarousel />
         <Gallery />
         <Contact />
         {!!reviews && <Comments reviews={reviews} />}

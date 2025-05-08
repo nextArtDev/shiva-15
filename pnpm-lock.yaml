@@ -203,6 +203,9 @@ importers:
       sonner:
         specifier: ^1.7.2
         version: 1.7.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      swiper:
+        specifier: ^11.2.6
+        version: 11.2.6
       tailwind-merge:
         specifier: ^2.6.0
         version: 2.6.0
@@ -3567,8 +3570,8 @@ packages:
     peerDependencies:
       react: '>=17.0'
 
-  swiper@11.2.1:
-    resolution: {integrity: sha512-62G69+iQRIfUqTmJkWpZDcX891Ra8O9050ckt1/JI2H+0483g+gq0m7gINecDqMtDh2zt5dK+uzBRxGhGOOvQA==}
+  swiper@11.2.6:
+    resolution: {integrity: sha512-8aXpYKtjy3DjcbzZfz+/OX/GhcU5h+looA6PbAzHMZT6ESSycSp9nAjPCenczgJyslV+rUGse64LMGpWE3PX9Q==}
     engines: {node: '>= 4.7.0'}
 
   tailwind-merge@2.6.0:
@@ -6007,7 +6010,7 @@ snapshots:
 
   '@types/swiper@6.0.0':
     dependencies:
-      swiper: 11.2.1
+      swiper: 11.2.6
 
   '@types/three@0.163.0':
     dependencies:
@@ -8149,7 +8152,7 @@ snapshots:
     dependencies:
       react: 19.0.0
 
-  swiper@11.2.1: {}
+  swiper@11.2.6: {}
 
   tailwind-merge@2.6.0: {}
 
