@@ -25,6 +25,7 @@ import ThreeDPhotoCarouselModify from '@/components/3d-carousel/modify'
 import ThreeDPhotoCarousel from '@/components/3d-carousel'
 import ThreeDPhotoCarouselModify2 from '@/components/3d-carousel/modify-5'
 import CubeEffect from '@/components/cube/CubeEffect'
+import { CardCarousel } from '@/components/swiper/InstaCarousel'
 
 export default async function Home() {
   const reviews = await prisma.review.findMany({
@@ -69,19 +70,20 @@ export default async function Home() {
           availabilities={availabilities}
           disabledDaysByDoctor={disabledDaysByDoctor}
         />
-        <div className="">
+        <div className="w-full h-full overflow-hidden">
           <CubeEffect items={diseases} />
         </div>
-        <div className="">
+        <div className="w-full h-full overflow-hidden">
           <CubeEffect items={publicBeuties} />
         </div>
-        <div className="">
+        <div className="w-full h-full overflow-hidden">
           <CubeEffect items={womanBeuties} />
         </div>
+        <CardCarousel items={publicBeuties} autoplayDelay={8000} />
         {/* <BentoDemo /> */}
         {/* <Booking /> */}
-        <Diseases />
-        <ThreeDPhotoCarouselModify2
+        {/* <Diseases /> */}
+        {/* <ThreeDPhotoCarouselModify2
           cards={diseases}
           scrollDirection="horizontal"
           orientation="left"
@@ -91,7 +93,7 @@ export default async function Home() {
           scrollDirection="horizontal"
           orientation="right"
         />
-        <ThreeDPhotoCarousel />
+        <ThreeDPhotoCarousel /> */}
         <Gallery />
         <Contact />
         {!!reviews && <Comments reviews={reviews} />}

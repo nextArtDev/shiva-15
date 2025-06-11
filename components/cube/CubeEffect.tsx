@@ -51,14 +51,13 @@ const CubeEffect: FC<ItemType> = ({ items }) => {
       }}
       style={{
         '--swiper-pagination-color': '#FFBA08',
-        '--swiper-shadow-color': '#FFBA08',
         '--swiper-pagination-bullet-inactive-color': '#999999',
         '--swiper-pagination-bullet-inactive-opacity': '1',
         '--swiper-pagination-bullet-size': '12px',
         '--swiper-pagination-bullet-horizontal-gap': '6px',
       }}
       modules={[EffectCube, Pagination, Autoplay]}
-      className="relative  mx-auto max-w-md h-fit w-full mt-20" // Added fixed height
+      className="relative  mx-auto max-w-md h-fit w-full pt-20" // Added fixed height
     >
       {items.map((item) => (
         <SwiperSlide key={item.id} className="relative w-full h-full">
