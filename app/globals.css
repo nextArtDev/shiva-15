@@ -795,3 +795,22 @@ body {
 .article.nextSlide {
   transform: translateX(100%);
 }
+
+.grainy {
+  background-color: hsl(262, 67%, 15%);
+  background-color: hsla(0, 0%, 100%, 0.28);
+  background-image: radial-gradient(
+      at 17% 27%,
+      hsla(145, 0%, 100%, 0.8) 0px,
+      transparent 50%
+    ),
+    /* radial-gradient(at 47% 51%, hsla(28, 100%, 74%, 0.54) 0px, transparent 50%),
+    radial-gradient(at 65% 44%, hsla(189, 24%, 41%, 1) 0px, transparent 50%),
+    radial-gradient(at 88% 81%, hsla(355, 100%, 93%, 1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(22, 100%, 77%, 0.71) 0px, transparent 50%), */
+      radial-gradient(at 47% 51%, hsl(262, 67%, 90%) 0px, transparent 50%),
+    radial-gradient(at 65% 44%, hsla(262, 67%, 15%, 0.2) 0px, transparent 50%),
+    radial-gradient(at 88% 81%, hsla(262, 67%, 15%, 0.7) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(262, 67%, 90%, 0.71) 0px, transparent 50%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='4.59' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
