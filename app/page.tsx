@@ -79,7 +79,9 @@ export default async function Home() {
         <div className="w-full h-full overflow-hidden">
           <CubeEffect items={womanBeuties} />
         </div>
-        <CardCarousel items={publicBeuties} autoplayDelay={8000} />
+        <div className=" py-32">
+          <CardCarousel items={publicBeuties} autoplayDelay={8000} />
+        </div>
         {/* <BentoDemo /> */}
         {/* <Booking /> */}
         {/* <Diseases /> */}

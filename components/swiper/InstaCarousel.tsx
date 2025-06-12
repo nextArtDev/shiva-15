@@ -90,11 +90,11 @@ const Story: FC<StoryProps> = ({
 
   return (
     <div
-      className="rounded-full p-[5px] transition-all duration-300 ease-in-out"
+      className="relative border-[#200d42] border-[8px] rounded-full p-[5px] transition-all duration-300 ease-in-out"
       style={{ ...containerStyle, ...ringStyle }}
     >
-      <div className="bg-white/80 backdrop-blur-3xl rounded-full h-full w-full flex items-center justify-center overflow-hidden">
-        <span className="text-xl text-center font-bold text-indigo-600 flex items-center justify-center select-none">
+      <div className="bg-[#200d42] backdrop-blur-3xl rounded-full h-full w-full flex items-center justify-center overflow-hidden">
+        <span className="text-base text-center font-bold text-white flex items-center justify-center select-none">
           {userName}
         </span>
       </div>
@@ -131,7 +131,7 @@ export const CardCarousel: React.FC<CarouselProps> = ({
         background-position: center;
         background-size: cover;
         width: 350px;
-        height: 380px;
+        height:auto;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -145,10 +145,10 @@ export const CardCarousel: React.FC<CarouselProps> = ({
     `
 
   return (
-    <section className="w-full">
+    <section className="w-full max-w-sm mx-auto">
       <style>{css}</style>
       <Swiper
-        effect={'coverflow'}
+        effect={'cube'}
         grabCursor={true}
         centeredSlides={true}
         loop={true}
@@ -164,21 +164,36 @@ export const CardCarousel: React.FC<CarouselProps> = ({
           disableOnInteraction: false,
         }}
         pagination={{ clickable: true }}
-        navigation={true}
+        // navigation={true}
         modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
       >
         {items.map((item) => (
           <SwiperSlide key={item.id}>
             {({ isActive }) => (
-              <div className="w-full h-auto flex flex-col gap-6 items-center justify-center rounded-3xl p-4 bg-white/50 backdrop-blur-sm border border-gray-200 shadow-lg">
-                <Story
-                  userName={item.title}
-                  duration={autoplayDelay - 100}
-                  size={120} // Made the circle a bit larger
-                  isActive={isActive}
-                />
-                {/* UPDATED: The redundant title element has been removed. */}
-                <p className="bg-white/80 border backdrop-blur-md rounded-xl px-4 py-3 text-black/70   shadow max-w-xs text-justify">
+              // <div className="w-full h-auto flex flex-col gap-6 items-center justify-center rounded-3xl p-4 bg-white/50 backdrop-blur-sm border border-gray-200 shadow-lg">
+              //   <Story
+              //     userName={item.title}
+              //     duration={autoplayDelay - 100}
+              //     size={120} // Made the circle a bit larger
+              //     isActive={isActive}
+              //   />
+
+              //   <p className="bg-white/80 border backdrop-blur-md rounded-xl px-4 py-3 text-black/70   shadow max-w-xs text-justify">
+              //     {item.description}
+              //   </p>
+              // </div>
+              <div className="relative my-16 w-full min-h-[380px] h-auto flex flex-col gap-6 items-center justify-center rounded-3xl p-4 bg-white/50 backdrop-blur-2xl border border-gray-200 shadow-lg">
+                <div className="absolute -top-[20%] left-1/2 -translate-x-1/2 ">
+                  <Story
+                    userName={item.title}
+                    duration={autoplayDelay - 100}
+                    size={120} // Made the circle a bit larger
+                    isActive={isActive}
+                  />
+                </div>
+
+                {/* <p className="bg-white/80 border backdrop-blur-md rounded-xl px-4 py-3 text-black/70   shadow max-w-xs text-justify"> */}
+                <p className="text-[#200d42]  rounded-xl px-4 py-3  max-w-xs text-justify">
                   {item.description}
                 </p>
               </div>

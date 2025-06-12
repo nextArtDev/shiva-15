@@ -53,6 +53,7 @@
     "framer-motion": "^10.18.0",
     "gsap": "^3.12.7",
     "jalaali-js": "^1.2.7",
+    "liquid-glass-react": "^1.1.1",
     "lucide-react": "^0.435.0",
     "moment": "^2.30.1",
     "next": "15.1.6",
