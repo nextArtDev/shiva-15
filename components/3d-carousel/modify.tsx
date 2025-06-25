@@ -106,7 +106,7 @@ const Carousel = memo(
     orientation: Orientation
   }) => {
     const isScreenSizeSm = useMediaQuery('(max-width: 640px)')
-    const cylinderWidth = isScreenSizeSm ? 1300 : 1800
+    const cylinderWidth = isScreenSizeSm ? 1400 : 1800
     const faceCount = cards.length
     const faceWidth = cylinderWidth / faceCount
     const radius = cylinderWidth / (2 * Math.PI)
@@ -116,7 +116,7 @@ const Carousel = memo(
       (value) => `rotate3d(0, 1, 0, ${value}deg)`
     )
 
-    const orientationMultiplier = orientation === 'right' ? 1 : -1
+    const orientationMultiplier = orientation === 'left' ? 1 : -1
 
     // Handle scroll rotation
     const handleScroll = useCallback(
@@ -163,7 +163,7 @@ const Carousel = memo(
       <div
         className="flex h-full items-center justify-center bg-mauve-dark-2 carousel-container"
         style={{
-          perspective: '1000px',
+          perspective: '800px',
           transformStyle: 'preserve-3d',
           willChange: 'transform',
         }}
@@ -215,7 +215,7 @@ const Carousel = memo(
                 alt={`keyword_${i} ${imgUrl}`}
                 layoutId={`img-${imgUrl}`}
                 className="pointer-events-none w-full rounded-xl object-cover aspect-square"
-                initial={{ filter: 'blur(4px)' }}
+                initial={{ filter: 'blur(1px)' }}
                 layout="position"
                 animate={{ filter: 'blur(0px)' }}
                 transition={transition}
@@ -273,7 +273,7 @@ export default function ThreeDPhotoCarouselModify({
             <motion.img
               layoutId={`img-${activeImg}`}
               src={activeImg}
-              className="max-w-full max-h-full rounded-lg shadow-lg"
+              className="max-w-full max-h-full  rounded-lg shadow-lg"
               initial={{ scale: 0.5 }}
               animate={{ scale: 1 }}
               transition={{
@@ -288,7 +288,7 @@ export default function ThreeDPhotoCarouselModify({
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="relative h-[600px] w-full overflow-hidden">
+      <div className="relative h-[50vh] w-full overflow-hidden">
         <Carousel
           handleClick={handleClick}
           controls={controls}

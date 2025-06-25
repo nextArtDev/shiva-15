@@ -26,6 +26,7 @@ import ThreeDPhotoCarousel from '@/components/3d-carousel'
 import ThreeDPhotoCarouselModify2 from '@/components/3d-carousel/modify'
 import CubeEffect from '@/components/cube/CubeEffect'
 import { CardCarousel } from '@/components/swiper/InstaCarousel'
+import RollingGallery from '@/components/rolling/RollingGallery'
 
 export const imageData1 = [
   '/images/1.jpg',
@@ -39,10 +40,10 @@ export const imageData1 = [
   //  '/images/9.jpg' ,
 ]
 export const imageData2 = [
-  //  '/images/1.jpg' ,
-  //  '/images/2.jpg' ,
-  //  '/images/3.jpg' ,
-  //  '/images/5.jpg' ,
+  '/images/1.jpg',
+  '/images/2.jpg',
+  '/images/3.jpg',
+  '/images/5.jpg',
   '/images/4.jpg',
   '/images/6.jpg',
   '/images/7.jpg',
@@ -113,7 +114,7 @@ export default async function Home() {
         {/* <BentoDemo /> */}
         {/* <Booking /> */}
         {/* <Diseases /> */}
-        <section dir="ltr">
+        <section>
           <ThreeDPhotoCarouselModify2
           // cards={diseases}
           // imageData={imageData1}
@@ -134,7 +135,9 @@ export default async function Home() {
         /> */}
         {/* <ThreeDPhotoCarousel /> */}
         <Gallery />
+        <RollingGallery />
         <Contact />
+
         {/* {!!reviews && <Comments reviews={reviews} />} */}
         {/* <FeaturedIn /> */}
         <div className="-z-10">
