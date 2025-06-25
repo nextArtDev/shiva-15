@@ -1,7 +1,7 @@
 import Hero from '@/components/Hero'
 import Booking from '@/components/booking'
 import FeaturedIn from '@/components/FeaturedIn'
-import Gallery from '@/components/Gallery'
+import Gallery from '@/components/Gallery2'
 
 import Card from '@/components/Card'
 import Diseases, {
@@ -134,7 +134,9 @@ export default async function Home() {
           orientation="right"
         /> */}
         {/* <ThreeDPhotoCarousel /> */}
+
         <Gallery />
+
         <RollingGallery />
         <Contact />
 
