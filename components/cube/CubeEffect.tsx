@@ -19,14 +19,16 @@ import {
 import Card from '../Card'
 import { publicBeuties } from '../diseases/Diseases'
 import { FC } from 'react'
+import { Story } from '../swiper/InstaCarousel'
 
 SwiperCore.use([EffectCube, Navigation, Pagination])
 
 type ItemType = {
   items: { id: number; title: string; description: string }[]
+  autoplayDelay: number
 }
 
-const CubeEffect: FC<ItemType> = ({ items }) => {
+const CubeEffect: FC<ItemType> = ({ items, autoplayDelay }) => {
   return (
     <Swiper
       effect={'cube'}
@@ -42,7 +44,7 @@ const CubeEffect: FC<ItemType> = ({ items }) => {
       }}
       loop
       autoplay={{
-        delay: 2500,
+        delay: autoplayDelay,
         disableOnInteraction: false,
         waitForTransition: true,
       }}
@@ -61,12 +63,23 @@ const CubeEffect: FC<ItemType> = ({ items }) => {
     >
       {items.map((item) => (
         <SwiperSlide key={item.id} className="relative w-full h-full">
-          <Card
-            // className={`service min-h-[40rem] w-[45rem] `}
-            title={item.title}
-            content={item.description}
-            color="[var(--clr-neon1)]"
-          />
+          {({ isActive }) => (
+            <div className="relative my-16 w-full min-h-[380px] h-auto flex flex-col gap-6 items-center justify-center rounded-3xl p-4 grainy backdrop-blur-2xl border border-gray-200  ">
+              <div className="absolute -top-[20%] left-1/2 -translate-x-1/2 ">
+                <Story
+                  userName={item.title}
+                  duration={autoplayDelay - 1000}
+                  size={120} // Made the circle a bit larger
+                  isActive={isActive}
+                />
+              </div>
+
+              {/* <p className="bg-white/80 border backdrop-blur-md rounded-xl px-4 py-3 text-black/70   shadow max-w-xs text-justify"> */}
+              <p className="text-[#200d42] pt-6 rounded-xl px-4 pb-3  max-w-xs text-justify">
+                {item.description}
+              </p>
+            </div>
+          )}
         </SwiperSlide>
       ))}
 

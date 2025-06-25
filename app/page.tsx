@@ -23,37 +23,59 @@ import { Suspense } from 'react'
 import StarsCanvas from '@/components/StarBackground'
 import ThreeDPhotoCarouselModify from '@/components/3d-carousel/modify'
 import ThreeDPhotoCarousel from '@/components/3d-carousel'
-import ThreeDPhotoCarouselModify2 from '@/components/3d-carousel/modify-5'
+import ThreeDPhotoCarouselModify2 from '@/components/3d-carousel/modify'
 import CubeEffect from '@/components/cube/CubeEffect'
 import { CardCarousel } from '@/components/swiper/InstaCarousel'
 
+export const imageData1 = [
+  '/images/1.jpg',
+  '/images/2.jpg',
+  '/images/3.jpg',
+  '/images/5.jpg',
+  //  '/images/4.jpg' ,
+  //  '/images/6.jpg' ,
+  //  '/images/7.jpg' ,
+  //  '/images/8.jpg' ,
+  //  '/images/9.jpg' ,
+]
+export const imageData2 = [
+  //  '/images/1.jpg' ,
+  //  '/images/2.jpg' ,
+  //  '/images/3.jpg' ,
+  //  '/images/5.jpg' ,
+  '/images/4.jpg',
+  '/images/6.jpg',
+  '/images/7.jpg',
+  '/images/8.jpg',
+  '/images/9.jpg',
+]
 export default async function Home() {
-  const reviews = await prisma.review.findMany({
-    include: {
-      user: {
-        select: {
-          name: true,
-        },
-      },
-    },
-  })
+  // const reviews = await prisma.review.findMany({
+  //   include: {
+  //     user: {
+  //       select: {
+  //         name: true,
+  //       },
+  //     },
+  //   },
+  // })
 
-  const user = await currentUser()
+  // const user = await currentUser()
 
-  const beforeRated = await prisma.review.findFirst({
-    where: {
-      userId: user?.id,
-    },
-    select: {
-      rating: true,
-    },
-  })
+  // const beforeRated = await prisma.review.findFirst({
+  //   where: {
+  //     userId: user?.id,
+  //   },
+  //   select: {
+  //     rating: true,
+  //   },
+  // })
 
-  const availabilities = await getAllAvailabilities()
+  // const availabilities = await getAllAvailabilities()
 
-  const disabledDaysByDoctor = availabilities?.map((availability) =>
-    availability.disableDays.map((disabled) => disabled.day)
-  )
+  // const disabledDaysByDoctor = availabilities?.map((availability) =>
+  //   availability.disableDays.map((disabled) => disabled.day)
+  // )
 
   return (
     <>
@@ -66,46 +88,61 @@ export default async function Home() {
         <section className="-my-30 ">
           <LogoTicker />
         </section>
-        <Places
+        {/* <Places
           availabilities={availabilities}
           disabledDaysByDoctor={disabledDaysByDoctor}
-        />
-        <div className="w-full h-full overflow-hidden">
+        /> */}
+        {/* <div className="w-full h-full overflow-hidden">
           <CubeEffect items={diseases} />
+        </div> */}
+        <div className=" py-28 overflow-hidden">
+          <CubeEffect items={publicBeuties} autoplayDelay={8000} />
         </div>
-        <div className="w-full h-full overflow-hidden">
-          <CubeEffect items={publicBeuties} />
+        <div className=" py-28 overflow-hidden">
+          <CubeEffect items={womanBeuties} autoplayDelay={8000} />
         </div>
-        <div className="w-full h-full overflow-hidden">
-          <CubeEffect items={womanBeuties} />
+        {/* <div className="w-full h-full   py-28 overflow-hidden">
+          <CardCarousel items={diseases} autoplayDelay={8000} />
         </div>
-        <div className=" py-32">
+        <div className=" py-28">
           <CardCarousel items={publicBeuties} autoplayDelay={8000} />
         </div>
+        <div className=" py-28">
+          <CardCarousel items={womanBeuties} autoplayDelay={8000} />
+        </div> */}
         {/* <BentoDemo /> */}
         {/* <Booking /> */}
         {/* <Diseases /> */}
+        <section dir="ltr">
+          <ThreeDPhotoCarouselModify2
+          // cards={diseases}
+          // imageData={imageData1}
+          // scrollDirection="horizontal"
+          // orientation="left"
+          />
+        </section>
+        {/* <ThreeDPhotoCarouselModify2
+          imageData={imageData2}
+          // cards={diseases}
+          scrollDirection="horizontal"
+          orientation="right"
+        /> */}
         {/* <ThreeDPhotoCarouselModify2
           cards={diseases}
           scrollDirection="horizontal"
-          orientation="left"
-        />
-        <ThreeDPhotoCarouselModify2
-          cards={diseases}
-          scrollDirection="horizontal"
           orientation="right"
-        />
-        <ThreeDPhotoCarousel /> */}
+        /> */}
+        {/* <ThreeDPhotoCarousel /> */}
         <Gallery />
         <Contact />
-        {!!reviews && <Comments reviews={reviews} />}
+        {/* {!!reviews && <Comments reviews={reviews} />} */}
         {/* <FeaturedIn /> */}
         <div className="-z-10">
           <Suspense fallback="null">
             <StarsCanvas />
           </Suspense>
         </div>
-        <Footer user={user} />
+        {/* <Footer user={user} /> */}
       </main>
     </>
   )

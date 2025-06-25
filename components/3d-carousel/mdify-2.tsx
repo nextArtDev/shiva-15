@@ -67,23 +67,6 @@ export function useMediaQuery(
   return matches
 }
 
-const keywords = [
-  'night',
-  'city',
-  'sky',
-  'sunset',
-  'sunrise',
-  'winter',
-  'skyscraper',
-  'building',
-  'cityscape',
-  'architecture',
-  'street',
-  'lights',
-  'downtown',
-  'bridge',
-]
-
 const duration = 0.15
 const transition = { duration, ease: [0.32, 0.72, 0, 1], filter: 'blur(4px)' }
 const transitionOverlay = { duration: 0.5, ease: [0.32, 0.72, 0, 1] }
@@ -109,7 +92,7 @@ const Carousel = memo(
     rotation: any // MotionValue<number>
   }) => {
     const isScreenSizeSm = useMediaQuery('(max-width: 640px)')
-    const cylinderWidth = isScreenSizeSm ? 1100 : 1800
+    const cylinderWidth = isScreenSizeSm ? 1000 : 1400
     const faceCount = cards.length
     const faceWidth = cylinderWidth / faceCount
     const radius = cylinderWidth / (2 * Math.PI)
@@ -164,9 +147,11 @@ const Carousel = memo(
 )
 
 export default function ThreeDPhotoCarouselModify2({
+  imageData,
   scrollDirection = 'horizontal',
   orientation = 'right',
 }: {
+  imageData: string[]
   scrollDirection?: ScrollDirection
   orientation?: Orientation
 }) {
@@ -242,12 +227,10 @@ export default function ThreeDPhotoCarouselModify2({
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="relative h-[200px] w-full overflow-hidden">
+      <div className="relative h-[40vh] w-full overflow-hidden">
         <Carousel
           handleClick={handleClick}
-          cards={keywords.map(
-            (keyword) => `https://picsum.photos/200/300?${keyword}`
-          )}
+          cards={imageData.map((_, i) => `/images/${i + 1}.jpg`)}
           isCarouselActive={isCarouselActive}
           scrollDirection={scrollDirection}
           orientation={orientation}

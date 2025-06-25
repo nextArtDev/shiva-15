@@ -45,7 +45,7 @@ interface StoryProps {
   isActive: boolean
 }
 
-const Story: FC<StoryProps> = ({
+export const Story: FC<StoryProps> = ({
   userName,
   duration = 4500,
   size = 80,
@@ -94,7 +94,7 @@ const Story: FC<StoryProps> = ({
       style={{ ...containerStyle, ...ringStyle }}
     >
       <div className="grainy backdrop-blur-3xl rounded-full h-full w-full flex items-center justify-center overflow-hidden">
-        <span className="text-base text-center font-bold text-black flex items-center justify-center select-none">
+        <span className="text-base text-center font-bold text-black/90 flex items-center justify-center select-none">
           {userName}
         </span>
       </div>
@@ -161,7 +161,7 @@ export const CardCarousel: React.FC<CarouselProps> = ({
       <Swiper
         effect={'cube'}
         grabCursor={true}
-        centeredSlides={true}
+        // centeredSlides={true}
         loop={true}
         slidesPerView={'auto'}
         // coverflowEffect={{
@@ -170,6 +170,14 @@ export const CardCarousel: React.FC<CarouselProps> = ({
         //   depth: 100,
         //   modifier: 2.5,
         // }}
+        zoom
+        cubeEffect={{
+          shadow: true,
+          slideShadows: true,
+
+          shadowOffset: 5,
+          shadowScale: 0.94,
+        }}
         autoplay={{
           delay: autoplayDelay,
           disableOnInteraction: false,

@@ -14,6 +14,7 @@ import {
   useMotionValue,
   useTransform,
 } from 'framer-motion'
+import { imageData1 } from '@/app/page'
 
 export const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -95,7 +96,7 @@ const Carousel = memo(
     cards,
     isCarouselActive,
     scrollDirection = 'horizontal',
-    orientation = 'right',
+    orientation = 'left',
   }: {
     handleClick: (imgUrl: string, index: number) => void
     controls: any
@@ -105,7 +106,7 @@ const Carousel = memo(
     orientation: Orientation
   }) => {
     const isScreenSizeSm = useMediaQuery('(max-width: 640px)')
-    const cylinderWidth = isScreenSizeSm ? 1100 : 1800
+    const cylinderWidth = isScreenSizeSm ? 1300 : 1800
     const faceCount = cards.length
     const faceWidth = cylinderWidth / faceCount
     const radius = cylinderWidth / (2 * Math.PI)
@@ -150,8 +151,11 @@ const Carousel = memo(
     useEffect(() => {
       const element = document.querySelector('.carousel-container')
       if (element) {
-        element.addEventListener('wheel', handleScroll, { passive: false })
-        return () => element.removeEventListener('wheel', handleScroll)
+        element.addEventListener('wheel', handleScroll as EventListener, {
+          passive: false,
+        })
+        return () =>
+          element.removeEventListener('wheel', handleScroll as EventListener)
       }
     }, [handleScroll])
 
@@ -223,10 +227,11 @@ const Carousel = memo(
     )
   }
 )
+Carousel.displayName = 'Carousel'
 
 export default function ThreeDPhotoCarouselModify({
   scrollDirection = 'horizontal',
-  orientation = 'right',
+  orientation = 'left',
 }: {
   scrollDirection?: ScrollDirection
   orientation?: Orientation
@@ -235,7 +240,7 @@ export default function ThreeDPhotoCarouselModify({
   const [isCarouselActive, setIsCarouselActive] = useState(true)
   const controls = useAnimation()
   const cards = useMemo(
-    () => keywords.map((keyword) => `https://picsum.photos/200/300?${keyword}`),
+    () => [1, 2, 3, 4, 5, 6, 7, 8, 9].map((_, i) => `/images/${i + 1}.jpg`),
     []
   )
 
@@ -283,7 +288,7 @@ export default function ThreeDPhotoCarouselModify({
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="relative h-[500px] w-full overflow-hidden">
+      <div className="relative h-[600px] w-full overflow-hidden">
         <Carousel
           handleClick={handleClick}
           controls={controls}
