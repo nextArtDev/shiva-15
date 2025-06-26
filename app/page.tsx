@@ -27,6 +27,7 @@ import ThreeDPhotoCarouselModify2 from '@/components/3d-carousel/modify'
 import CubeEffect from '@/components/cube/CubeEffect'
 import { CardCarousel } from '@/components/swiper/InstaCarousel'
 import RollingGallery from '@/components/rolling/RollingGallery'
+import GalleryClaud from '@/components/GalleryClaud'
 
 export const imageData1 = [
   '/images/1.jpg',
@@ -142,6 +143,7 @@ export default async function Home() {
 
         {/* {!!reviews && <Comments reviews={reviews} />} */}
         {/* <FeaturedIn /> */}
+        <GalleryClaud />
         <div className="-z-10">
           <Suspense fallback="null">
             <StarsCanvas />
